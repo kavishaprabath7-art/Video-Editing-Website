@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cinematic Video Editing | Global Brands & Creators</title>
+    <meta name="description"
+        content="Premium, modern portfolio for international freelance video editing. High-impact storytelling, professional color grading, and premium post-production.">
+    <!-- Google Fonts: Inter and Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <header class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <span class="logo-icon"></span>
+                KAWEESHA<span class="text-primary"> CHAMARA</span>
+            </a>
+            <nav class="nav-links">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="#portfolio" class="nav-link">Portfolio</a>
+                <a href="#services" class="nav-link">Services</a>
+                <a href="#contact" class="btn btn-primary btn-sm">Let's Talk</a>
+            </nav>
+            <div class="mobile-menu-btn">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="bg-glow" style="top: -200px; left: -200px;"></div>
+        <div class="bg-glow"
+            style="bottom: -100px; right: 10vw; background: radial-gradient(circle, rgba(0, 191, 255, 0.1) 0%, rgba(10, 25, 47, 0) 70%);">
+        </div>
+
+        <div class="hero-overlay"></div>
+        <div class="hero-bg-video-placeholder"></div>
+
+        <div class="container hero-content">
+            <h1 class="hero-title fade-in">
+                Cinematic Video Editing for <br>
+                <span class="text-gradient">Global Brands & Creators</span>
+            </h1>
+            <p class="hero-subtitle fade-in" style="transition-delay: 0.2s;">
+                High-impact storytelling, professional color grading, and premium post-production that elevates your
+                visual identity.
+            </p>
+            <div class="hero-cta fade-in" style="transition-delay: 0.4s;">
+                <a href="#portfolio" class="btn btn-solid">View Portfolio</a>
+                <a href="#contact" class="btn btn-primary"
+                    onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); return false;">Work
+                    With Me</a>
+            </div>
+
+            <div class="showreel-preview fade-in" style="transition-delay: 0.6s;">
+                <div class="glass-panel video-wrapper hero-showreel">
+                    <img id="hero-custom-poster" src="cinematic storytelling.jpg" alt="Cinematic Storytelling"
+                        style="position:absolute; top:0; left:0; width:100%; height:100%; object-fit:cover; z-index: 5; transition: opacity 0.3s ease; pointer-events: none;">
+                    <iframe id="hero-vimeo-player"
+                        src="https://player.vimeo.com/video/1166969006?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                        frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" title="Untitled design"
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-image glass-panel fade-in">
+                    <img src="its me.png" alt="Video Editor Portrait">
+                </div>
+                <div class="about-content fade-in" style="transition-delay: 0.2s;">
+                    <h2 class="section-title">Crafting Visuals with <span class="text-primary">Impact</span></h2>
+                    <p class="text-muted" style="margin-bottom: 40px; font-size: 1.1rem;">
+                        I am Kaweesha Chamara, a 21-year-old video editor from Wennappuwa, Sri Lanka. I have over 5
+                        years of professional experience working with Fiverr and local clients, using industry-leading
+                        software to make your videos amazing.
+                    </p>
+
+                    <h3 style="margin-bottom: 20px; font-size: 1.5rem;">Core Expertise</h3>
+                    <div class="skills-grid">
+                        <!-- Premiere Pro -->
+                        <div class="skill-card glass-panel flex-column align-start">
+                            <div class="skill-header">
+                                <span class="skill-icon"
+                                    style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding-top: 5px;">
+                                    <img src="premiere.png" alt="Premiere Pro Logo"
+                                        style="width: 100%; height: 100%; object-fit: contain;">
+                                </span>
+                                <h4>Premiere Pro</h4>
+                            </div>
+                            <p class="skill-subtext">Video Editing</p>
+                        </div>
+
+                        <!-- After Effects -->
+                        <div class="skill-card glass-panel flex-column align-start">
+                            <div class="skill-header">
+                                <span class="skill-icon"
+                                    style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding-top: 5px;">
+                                    <img src="after effects.png" alt="After Effects Logo"
+                                        style="width: 100%; height: 100%; object-fit: contain;">
+                                </span>
+                                <h4>After Effects</h4>
+                            </div>
+                            <p class="skill-subtext">Motion Graphics</p>
+                        </div>
+
+                        <!-- DaVinci Resolve -->
+                        <div class="skill-card glass-panel flex-column align-start">
+                            <div class="skill-header">
+                                <span class="skill-icon"
+                                    style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding-top: 5px;">
+                                    <img src="davinchi logo.png" alt="DaVinci Resolve Logo"
+                                        style="width: 100%; height: 100%; object-fit: contain;">
+                                </span>
+                                <h4>DaVinci Resolve</h4>
+                            </div>
+                            <p class="skill-subtext">Color Grading</p>
+                        </div>
+
+                        <!-- Blender -->
+                        <div class="skill-card glass-panel flex-column align-start">
+                            <div class="skill-header">
+                                <span class="skill-icon"
+                                    style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding-top: 5px;">
+                                    <img src="blender.png" alt="Blender Logo"
+                                        style="width: 100%; height: 100%; object-fit: contain;">
+                                </span>
+                                <h4>Blender</h4>
+                            </div>
+                            <p class="skill-subtext">3D Animations</p>
+                        </div>
+
+                        <!-- Nano Banana Pro -->
+                        <div class="skill-card glass-panel flex-column align-start">
+                            <div class="skill-header">
+                                <span class="skill-icon"
+                                    style="display: flex; align-items: center; justify-content: center; width: 32px; height: 32px; padding-top: 5px;">
+                                    <img src="nano banana pro.png" alt="Nano Banana Pro Logo"
+                                        style="width: 100%; height: 100%; object-fit: contain;">
+                                </span>
+                                <h4>Nano Banana Pro</h4>
+                            </div>
+                            <p class="skill-subtext">AI Video</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Fiverr Showreel Section -->
+    <section id="fiverr-showreel" class="fiverr-showreel" style="padding: 100px 0 40px;">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title fade-in">Fiverr <span class="text-primary">Showreel</span></h2>
+            </div>
+            <div class="showreel-preview fade-in" style="margin-top: 40px;">
+                <div class="glass-panel video-wrapper hero-showreel"
+                    style="border-radius: 12px; overflow: hidden; position: relative; padding-top: 56.25%;">
+                    <iframe id="fiverr-vimeo-player"
+                        src="https://player.vimeo.com/video/1166994220?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                        width="1920" height="1080" frameborder="0"
+                        allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" title="fiver showreel"
+                        style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section -->
+    <section id="portfolio" class="portfolio">
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title fade-in">Selected <span class="text-secondary">Works</span></h2>
+                <p class="section-subtitle fade-in" style="transition-delay: 0.2s;">A curated collection of my best
+                    commercial projects, social media content, and event highlights.</p>
+            </div>
+
+            <div class="portfolio-grid">
+                <!-- Project 1 -->
+                <div class="portfolio-item glass-panel fade-in" style="transition-delay: 0.3s;">
+                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                src="https://player.vimeo.com/video/1166923241?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                                title="dry ice project"></iframe></div>
+                        <script src="https://player.vimeo.com/api/player.js"></script>
+                    </div>
+                    <div class="portfolio-info">
+                        <span class="text-primary"
+                            style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Commercial</span>
+                        <h3 style="margin: 8px 0; font-size: 1.4rem;">Dry Ice Promotion Video</h3>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="portfolio-item glass-panel fade-in" style="transition-delay: 0.4s;">
+                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                src="https://player.vimeo.com/video/1166922976?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                                title="timeline animation movie"></iframe></div>
+                        <script src="https://player.vimeo.com/api/player.js"></script>
+                    </div>
+                    <div class="portfolio-info">
+                        <span class="text-secondary"
+                            style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Animation</span>
+                        <h3 style="margin: 8px 0; font-size: 1.4rem;">Timeline Animation Movie</h3>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="portfolio-item glass-panel fade-in" style="transition-delay: 0.5s;">
+                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                src="https://player.vimeo.com/video/1166922921?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                                title="The Dan Koe style video prj"></iframe></div>
+                        <script src="https://player.vimeo.com/api/player.js"></script>
+                    </div>
+                    <div class="portfolio-info">
+                        <span class="text-primary"
+                            style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Commercial</span>
+                        <h3 style="margin: 8px 0; font-size: 1.4rem;">The Dan Koe Style Video</h3>
+                    </div>
+                </div>
+
+                <!-- Project 4 (Hidden by default) -->
+                <div class="portfolio-item glass-panel fade-in hidden-project" style="transition-delay: 0.6s;">
+                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                src="https://player.vimeo.com/video/1166922380?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                                title="the airbnb business edit"></iframe></div>
+                        <script src="https://player.vimeo.com/api/player.js"></script>
+                    </div>
+                    <div class="portfolio-info">
+                        <span
+                            style="color: #FFD700; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Showreel</span>
+                        <h3 style="margin: 8px 0; font-size: 1.4rem;">The Airbnb Business Edit</h3>
+                    </div>
+                </div>
+
+                <!-- Project 5 (Hidden by default) -->
+                <div class="portfolio-item glass-panel fade-in hidden-project" style="transition-delay: 0.7s;">
+                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                src="https://player.vimeo.com/video/1166922195?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                frameborder="0"
+                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                referrerpolicy="strict-origin-when-cross-origin"
+                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
+                                title="mr beast edit project"></iframe></div>
+                        <script src="https://player.vimeo.com/api/player.js"></script>
+                    </div>
+                    <div class="portfolio-info">
+                        <span
+                            style="color: #FFD700; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Showreel</span>
+                        <h3 style="margin: 8px 0; font-size: 1.4rem;">Mr Beast Style Edit</h3>
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="text-center fade-in" style="margin-top: 60px; transition-delay: 0.7s;">
+                <button id="view-more-btn" class="btn btn-primary" onclick="toggleProjects()"
+                    style="cursor: pointer; font-family: inherit; font-size: 1rem;">View More Projects</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section id="services" class="services">
+        <div class="bg-glow" style="right: -200px; top: 50%; opacity: 0.5;"></div>
+        <div class="container">
+            <div class="text-center">
+                <h2 class="section-title fade-in">Editing <span class="text-primary">Packages</span></h2>
+                <p class="section-subtitle fade-in" style="transition-delay: 0.2s;">Clear pricing. Premium quality.
+                    Tailored to your specific content needs.</p>
+            </div>
+
+            <div class="pricing-grid">
+                <!-- Package 1 -->
+                <div class="pricing-card glass-panel fade-in" style="transition-delay: 0.3s;">
+                    <div class="card-header">
+                        <h3>Basic Editing</h3>
+                        <div class="price">
+                            <span class="currency">$</span><span class="amount">10</span><span
+                                class="period">/video</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><span class="check">✓</span> Simple cut & trim</li>
+                        <li><span class="check">✓</span> Basic color correction</li>
+                        <li><span class="check">✓</span> Standard transitions</li>
+                        <li><span class="check">✓</span> Up to 5 mins final length</li>
+                        <li><span class="check">✓</span> 1 Revision</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary"
+                        style="width: 100%; text-align: center; margin-top: auto;">Request Quote</a>
+                </div>
+
+                <!-- Package 2 -->
+                <div class="pricing-card glass-panel featured fade-in" style="transition-delay: 0.4s;">
+                    <div class="featured-badge">Most Popular</div>
+                    <div class="card-header">
+                        <h3>Advanced Cinematic</h3>
+                        <div class="price text-primary">
+                            <span class="currency">$</span><span class="amount">25</span><span
+                                class="period">/video</span>
+                        </div>
+                        <div class="text-center" style="margin-top: 5px; margin-bottom: -15px;">
+                            <span
+                                style="text-decoration: line-through; color: var(--color-text-muted); font-size: 1rem;">$50</span>
+                            <span
+                                style="background: rgba(37, 99, 235, 0.2); color: var(--color-primary); padding: 4px 8px; border-radius: 4px; font-size: 0.8rem; font-weight: 600; margin-left: 8px;">50%
+                                OFF</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><span class="check text-primary">✓</span> Advanced narrative edit</li>
+                        <li><span class="check text-primary">✓</span> Cinematic color grading</li>
+                        <li><span class="check text-primary">✓</span> Custom motion graphics</li>
+                        <li><span class="check text-primary">✓</span> Professional sound design</li>
+                        <li><span class="check text-primary">✓</span> Up to 15 mins final length</li>
+                        <li><span class="check text-primary">✓</span> 3 Revisions</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-solid"
+                        style="width: 100%; text-align: center; margin-top: auto;">Request Quote</a>
+                </div>
+
+                <!-- Package 3 -->
+                <div class="pricing-card glass-panel fade-in" style="transition-delay: 0.5s;">
+                    <div class="card-header">
+                        <h3>Full Production</h3>
+                        <div class="price">
+                            <span class="currency">Custom</span>
+                        </div>
+                    </div>
+                    <ul class="features-list">
+                        <li><span class="check text-secondary">✓</span> VOD & Documentary class</li>
+                        <li><span class="check text-secondary">✓</span> High-end VFX & 3D elements</li>
+                        <li><span class="check text-secondary">✓</span> Multi-cam sync & edit</li>
+                        <li><span class="check text-secondary">✓</span> Mastered audio mix</li>
+                        <li><span class="check text-secondary">✓</span> Any length</li>
+                        <li><span class="check text-secondary">✓</span> Unlimited Revisions</li>
+                    </ul>
+                    <a href="#contact" class="btn btn-primary"
+                        style="width: 100%; text-align: center; margin-top: auto;">Request Quote</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact cinematic-section">
+        <!-- Floating Particles Background -->
+        <div class="particles-container">
+            <div class="particle p1"></div>
+            <div class="particle p2"></div>
+            <div class="particle p3"></div>
+            <div class="particle p4"></div>
+            <div class="particle p5"></div>
+        </div>
+
+        <!-- Soft Cinematic Blur -->
+        <div class="cinematic-blur"></div>
+
+        <div class="container relative-z">
+            <div class="contact-grid align-center">
+                <div class="contact-info fade-in slide-up">
+                    <h2 class="section-title">Let's Create Something <span class="text-secondary">Cinematic</span></h2>
+                    <p class="text-muted" style="margin-bottom: 40px; font-size: 1.1rem; max-width: 400px;">
+                        Tell me about your project and let's bring your vision to life.
+                    </p>
+
+                    <div class="contact-methods">
+                        <div class="method glass-panel">
+                            <h4>Email Me</h4>
+                            <a href="mailto:kaweeshawarnakula@gmail.com" class="text-primary"
+                                style="word-break: break-all; text-decoration: none;">kaweeshawarnakula@gmail.com</a>
+                        </div>
+                        <div class="method glass-panel" style="margin-top: 20px;">
+                            <h4>Chat with Me</h4>
+                            <div style="margin-top: 10px;">
+                                <a href="https://wa.me/94773714459" target="_blank" class="social-icon"
+                                    style="width: 50px; height: 50px; background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3);"
+                                    onmouseover="this.style.background='#25D366'"
+                                    onmouseout="this.style.background='rgba(37, 211, 102, 0.1)'">
+                                    <img src="whatsapp.png" alt="WhatsApp"
+                                        style="width: 28px; height: 28px; object-fit: contain;">
+                                </a>
+                            </div>
+                        </div>
+                        <div class="method glass-panel" style="margin-top: 20px;">
+                            <h4>Follow Me</h4>
+                            <div class="social-links" style="margin-top: 10px;">
+                                <a href="https://www.tiktok.com/@chamaraedit?_r=1&_t=ZN-9478i52LAwA" target="_blank"
+                                    class="social-icon" title="TikTok">
+                                    <img src="tiktok .png" alt="TikTok"
+                                        style="width: 20px; height: 20px; object-fit: contain;">
+                                </a>
+                                <a href="https://youtube.com/@kaweeedit?si=OoRk0eHfJRxC51qu" target="_blank"
+                                    class="social-icon" title="YouTube">
+                                    <img src="youtube.png" alt="YouTube"
+                                        style="width: 20px; height: 20px; object-fit: contain;">
+                                </a>
+                                <a href="https://www.instagram.com/kavi_sha_w.sooriya?igsh=MWIzbXdkdW9qbWphaw=="
+                                    target="_blank" class="social-icon" title="Instagram">
+                                    <img src="instagram.png" alt="Instagram"
+                                        style="width: 20px; height: 20px; object-fit: contain;">
+                                </a>
+                                <a href="https://www.linkedin.com/in/kaweesha-warnakulasuriya-993034344?utm_source=share_via&utm_content=profile&utm_medium=member_android"
+                                    target="_blank" class="social-icon" title="LinkedIn">
+                                    <img src="linkden.png" alt="LinkedIn"
+                                        style="width: 20px; height: 20px; object-fit: contain;">
+                                </a>
+                                <a href="https://web.facebook.com/profile.php?id=61575048704361" target="_blank"
+                                    class="social-icon" title="Facebook">
+                                    <img src="pngwing.com.png" alt="Facebook"
+                                        style="width: 20px; height: 20px; object-fit: contain;">
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper glass-panel cinematic-form fade-in slide-up"
+                    style="transition-delay: 0.2s;">
+                    <!-- Using Formspree for email forwarding -->
+                    <form class="contact-form" action="https://formspree.io/f/kaweeshawarnakula@gmail.com"
+                        method="POST">
+                        <div class="form-group">
+                            <label for="name">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="john@example.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Project Type</label>
+                            <select id="service" name="project_type" required>
+                                <option value="" disabled selected>Select a project type...</option>
+                                <option value="Wedding Film">Wedding Film</option>
+                                <option value="YouTube Video">YouTube Video</option>
+                                <option value="Commercial Ad">Commercial Ad</option>
+                                <option value="Social Media Edit">Social Media Edit</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="budget">Budget Range (Optional)</label>
+                            <input type="text" id="budget" name="budget" placeholder="e.g. $500 - $1000">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <textarea id="message" name="message" rows="5" placeholder="Tell me about your vision..."
+                                required></textarea>
+                        </div>
+                        <!-- Formspree hidden fields for config -->
+                        <input type="hidden" name="_subject" value="New Project Inquiry from Portfolio!">
+                        <input type="hidden" name="_replyto" value="%email%">
+                        <button type="submit" class="btn btn-glowing" style="width: 100%; border: none;">Start Your
+                            Project</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-logo">
+                <span class="logo-icon"></span>
+                KAWEESHA<span class="text-primary"> CHAMARA</span>
+            </div>
+            <p class="text-muted" style="font-size: 0.9rem;">&copy; 2026 Kaweesha Chamara. All rights
+                reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
