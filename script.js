@@ -200,17 +200,17 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.textContent = 'Sending...';
             submitBtn.disabled = true;
 
-            const data = {
-                name: this.name.value,
-                email: this.email.value,
-                project_type: this.project_type.value || '',
-                budget: this.budget.value || '',
-                message: this.message.value || ''
-            };
+            const data = new FormData();
+            data.append('name', this.name.value);
+            data.append('email', this.email.value);
+            data.append('project_type', this.project_type.value || '');
+            data.append('service', this.service.value || '');
+            data.append('budget', this.budget.value || '');
+            data.append('message', this.message.value || '');
 
-            fetch("https://script.google.com/macros/s/AKfycbx-LQJvA6Iur-K-3aXPZUVeVNVBiYrD--dShXK21QekklEqjkW9WmQC0Gs3v6shiuAyug/exec", {
+            fetch("https://script.google.com/macros/s/AKfycby_THfWs8LRvciU1aiEAmymi6dUiM4-bAi24Dn7GrOQASjhdr0nunCOLOHgDX-iwbtzSw/exec", {
                 method: "POST",
-                body: JSON.stringify(data),
+                body: data,
                 mode: "no-cors"
             }).then(res => {
                 alert("Message sent successfully!");
