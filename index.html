@@ -460,9 +460,8 @@
 
                 <div class="contact-form-wrapper glass-panel cinematic-form fade-in slide-up"
                     style="transition-delay: 0.2s;">
-                    <!-- Using Formspree for email forwarding -->
-                    <form class="contact-form" action="https://formspree.io/f/kaweeshawarnakula@gmail.com"
-                        method="POST">
+                    <!-- Using Google Apps Script for email forwarding -->
+                    <form id="contactForm" class="contact-form">
                         <div class="form-group">
                             <label for="name">Full Name</label>
                             <input type="text" id="name" name="name" placeholder="John Doe" required>
@@ -491,9 +490,7 @@
                             <textarea id="message" name="message" rows="5" placeholder="Tell me about your vision..."
                                 required></textarea>
                         </div>
-                        <!-- Formspree hidden fields for config -->
-                        <input type="hidden" name="_subject" value="New Project Inquiry from Portfolio!">
-                        <input type="hidden" name="_replyto" value="%email%">
+
                         <button type="submit" class="btn btn-glowing" style="width: 100%; border: none;">Start Your
                             Project</button>
                     </form>

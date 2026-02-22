@@ -185,3 +185,43 @@ document.addEventListener('DOMContentLoaded', () => {
     if (heroWrapper) videoObserver.observe(heroWrapper);
     if (fiverrWrapper) videoObserver.observe(fiverrWrapper);
 });
+
+/**
+ * Contact Form Submission to Google Apps Script
+ */
+document.addEventListener('DOMContentLoaded', () => {
+    const contactForm = document.getElementById('contactForm');
+    if (contactForm) {
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalBtnText = submitBtn.textContent;
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const data = {
+                name: this.name.value,
+                email: this.email.value,
+                project_type: this.project_type.value || '',
+                budget: this.budget.value || '',
+                message: this.message.value || ''
+            };
+
+            fetch("https://script.google.com/macros/s/AKfycbx-LQJvA6Iur-K-3aXPZUVeVNVBiYrD--dShXK21QekklEqjkW9WmQC0Gs3v6shiuAyug/exec", {
+                method: "POST",
+                body: JSON.stringify(data),
+                mode: "no-cors"
+            }).then(res => {
+                alert("Message sent successfully!");
+                this.reset();
+            }).catch(err => {
+                console.error("Error:", err);
+                alert("An error occurred while sending the message.");
+            }).finally(() => {
+                submitBtn.textContent = originalBtnText;
+                submitBtn.disabled = false;
+            });
+        });
+    }
+});
