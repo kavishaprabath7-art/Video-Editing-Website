@@ -150,19 +150,51 @@ function initPortfolioCarousel() {
             item.style.position = 'absolute';
             item.style.transition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
             item.style.width = '80%';
-            item.style.maxWidth = '320px';
+            item.style.maxWidth = '450px';
             item.style.cursor = 'pointer';
 
             // Enable/disable pointer events on the iframe wrapper to prevent stealing clicks
             const iframeWrapper = item.querySelector('div > div');
             if (iframeWrapper) {
-                iframeWrapper.style.pointerEvents = index === currentIndex ? 'auto' : 'none';
+                iframeWrapper.style.pointerEvents = 'none'; // Keep none by default to allow swiping on the parent
             }
 
             // Also enable events on iframe itself since we disabled it in HTML earlier
             const iframe = item.querySelector('iframe');
             if (iframe) {
-                iframe.style.pointerEvents = index === currentIndex ? 'auto' : 'none';
+                iframe.style.pointerEvents = 'none'; // Keep none by default to allow swiping
+            }
+
+            // Create or manage a touch overlay for the active item
+            let touchOverlay = item.querySelector('.touch-overlay');
+            if (!touchOverlay) {
+                touchOverlay = document.createElement('div');
+                touchOverlay.className = 'touch-overlay';
+                touchOverlay.style.position = 'absolute';
+                touchOverlay.style.top = '0';
+                touchOverlay.style.left = '0';
+                touchOverlay.style.width = '100%';
+                touchOverlay.style.height = '100%';
+                touchOverlay.style.zIndex = '50';
+                item.appendChild(touchOverlay);
+
+                // When they click the overlay on the ACTIVE item, remove the overlay to let them play the video
+                touchOverlay.addEventListener('click', (e) => {
+                    if (item.classList.contains('active')) {
+                        touchOverlay.style.display = 'none';
+                        if (iframeWrapper) iframeWrapper.style.pointerEvents = 'auto';
+                        if (iframe) iframe.style.pointerEvents = 'auto';
+
+                        // Try to auto-play if clicked
+                        const index = parseInt(item.getAttribute('data-index') || item.dataset.index);
+                        if (typeof index !== 'undefined' && vimeoPlayers[index]) {
+                            vimeoPlayers[index].play().catch(err => console.log(err));
+                        }
+                    }
+                });
+            } else {
+                // Reset overlay when carousel moves
+                touchOverlay.style.display = 'block';
             }
 
             if (index === currentIndex) {

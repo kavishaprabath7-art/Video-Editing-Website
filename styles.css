@@ -55,6 +55,8 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
+    font-size: 1.1rem;
+    /* Base font size increased */
 }
 
 h1,
@@ -98,7 +100,7 @@ ul {
 /* Layout Utilities */
 .container {
     width: 100%;
-    max-width: 1400px;
+    max-width: 100%;
     margin: 0 auto;
     padding: 0 5%;
 }
@@ -515,12 +517,12 @@ section {
 
 @media (max-width: 768px) {
     .portfolio-carousel {
-        height: 550px !important;
+        height: 650px !important;
     }
 
     .portfolio-item {
         width: 100% !important;
-        max-width: 250px !important;
+        max-width: 320px !important;
     }
 
     .portfolio-item.prev {
@@ -1111,6 +1113,12 @@ section {
     .method.glass-panel {
         min-width: 100% !important;
         padding: 20px 15px;
+    }
+
+    /* Fix mobile background fixed attachment zoom bug */
+    body {
+        background-attachment: scroll;
+        background-size: cover;
     }
 }
 
