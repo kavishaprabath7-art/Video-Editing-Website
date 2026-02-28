@@ -25,7 +25,7 @@
     --section-padding: 100px 0;
 
     /* Effects */
-    --transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    --transition: all 0.6s cubic-bezier(0.22, 1, 0.36, 1);
     --glow-primary: 0 0 20px rgba(250, 204, 21, 0.5);
     --glow-secondary: 0 0 30px rgba(234, 179, 8, 0.4);
     --glass-bg: rgba(10, 10, 10, 0.6);
@@ -98,9 +98,9 @@ ul {
 /* Layout Utilities */
 .container {
     width: 100%;
-    max-width: 1200px;
+    max-width: 1400px;
     margin: 0 auto;
-    padding: 0 24px;
+    padding: 0 4vw;
 }
 
 section {
@@ -1000,7 +1000,7 @@ section {
 
 /* Slide Up Animation */
 .slide-up {
-    transform: translateY(40px);
+    transform: translateY(60px);
     opacity: 0;
 }
 
@@ -1109,8 +1109,8 @@ section {
 /* Animations */
 .fade-in {
     opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+    transform: translateY(40px);
+    transition: opacity 1.2s cubic-bezier(0.22, 1, 0.36, 1), transform 1.2s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .fade-in.is-visible {
