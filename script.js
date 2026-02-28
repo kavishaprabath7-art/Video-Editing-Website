@@ -33,7 +33,56 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // (Old portfolio-video-wrapper logic removed since videos are Vimeo iframes)
+    // Contact Sidebar Toggle
+    const sidebar = document.getElementById('contactSidebar');
+    const overlay = document.getElementById('sidebarOverlay');
+    const openBtn = document.getElementById('openSidebarBtn');
+    const closeBtn = document.getElementById('closeSidebarBtn');
+
+    function openSidebar(e) {
+        if (e) e.preventDefault();
+        sidebar.classList.add('active');
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden'; // Prevent scrolling
+    }
+
+    function closeSidebar(e) {
+        if (e) e.preventDefault();
+        sidebar.classList.remove('active');
+        overlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Attach to all related buttons
+    const triggerBtns = [
+        document.getElementById('openSidebarBtn'),
+        document.getElementById('navContactBtn'),
+        document.getElementById('heroContactBtn'),
+        ...document.querySelectorAll('.open-sidebar-btn')
+    ];
+
+    triggerBtns.forEach(btn => {
+        if (btn) btn.addEventListener('click', openSidebar);
+    });
+
+    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+    if (overlay) overlay.addEventListener('click', closeSidebar);
+
+    // Sidebar swipe to close on mobile
+    let sidebarTouchStart = 0;
+    if (sidebar) {
+        sidebar.addEventListener('touchstart', e => {
+            sidebarTouchStart = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        sidebar.addEventListener('touchend', e => {
+            if (e.changedTouches[0].screenX > sidebarTouchStart + 50) {
+                closeSidebar();
+            }
+        });
+    }
+
+    initPortfolioCarousel();
 });
 
 /**
@@ -71,30 +120,147 @@ function initScrollAnimations() {
 }
 
 /**
- * Toggle visibility of hidden portfolio projects
+ * Portfolio Coverflow Carousel
  */
-function toggleProjects() {
-    const hiddenProjects = document.querySelectorAll('.hidden-project');
-    const viewMoreBtn = document.getElementById('view-more-btn');
-    let isShowing = false;
+function initPortfolioCarousel() {
+    const items = document.querySelectorAll('.portfolio-carousel .portfolio-item');
+    if (!items.length) return;
 
-    hiddenProjects.forEach(project => {
-        if (project.style.display === 'none' || project.style.display === '') {
-            project.style.display = 'block';
-            isShowing = true;
-        } else {
-            project.style.display = 'none';
-            isShowing = false;
-        }
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    let currentIndex = 0;
+
+    // Load vimeo players for portfolio
+    const vimeoPlayers = [];
+    if (typeof Vimeo !== 'undefined') {
+        items.forEach(item => {
+            const iframe = item.querySelector('iframe');
+            if (iframe) {
+                vimeoPlayers.push(new Vimeo.Player(iframe));
+            } else {
+                vimeoPlayers.push(null);
+            }
+        });
+    }
+
+    function updateCarousel() {
+        items.forEach((item, index) => {
+            // Remove existing state classes
+            item.classList.remove('active', 'prev', 'next', 'hidden-left', 'hidden-right');
+            item.style.position = 'absolute';
+            item.style.transition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+            item.style.width = '80%';
+            item.style.maxWidth = '320px';
+            item.style.cursor = 'pointer';
+
+            // Enable/disable pointer events on the iframe wrapper to prevent stealing clicks
+            const iframeWrapper = item.querySelector('div > div');
+            if (iframeWrapper) {
+                iframeWrapper.style.pointerEvents = index === currentIndex ? 'auto' : 'none';
+            }
+
+            // Also enable events on iframe itself since we disabled it in HTML earlier
+            const iframe = item.querySelector('iframe');
+            if (iframe) {
+                iframe.style.pointerEvents = index === currentIndex ? 'auto' : 'none';
+            }
+
+            if (index === currentIndex) {
+                item.classList.add('active');
+                item.style.transform = 'translateX(0) scale(1) translateZ(0)';
+                item.style.zIndex = '10';
+                item.style.opacity = '1';
+                item.style.filter = 'blur(0px)';
+            } else if (index === (currentIndex - 1 + items.length) % items.length) {
+                item.classList.add('prev');
+                item.style.transform = 'translateX(-75%) scale(0.8) translateZ(-100px)';
+                item.style.zIndex = '5';
+                item.style.opacity = '0.6';
+                item.style.filter = 'blur(6px)';
+            } else if (index === (currentIndex + 1) % items.length) {
+                item.classList.add('next');
+                item.style.transform = 'translateX(75%) scale(0.8) translateZ(-100px)';
+                item.style.zIndex = '5';
+                item.style.opacity = '0.6';
+                item.style.filter = 'blur(6px)';
+            } else {
+                // Determine if it should hide left or right
+                let diff = index - currentIndex;
+                if (diff < 0) diff += items.length;
+                if (diff > items.length / 2) {
+                    item.classList.add('hidden-left');
+                    item.style.transform = 'translateX(-120%) scale(0.6) translateZ(-200px)';
+                } else {
+                    item.classList.add('hidden-right');
+                    item.style.transform = 'translateX(120%) scale(0.6) translateZ(-200px)';
+                }
+                item.style.zIndex = '1';
+                item.style.opacity = '0';
+                item.style.pointerEvents = 'none';
+            }
+        });
+
+        // Pause all players when carousel updates, user has to manually play current
+        vimeoPlayers.forEach((player, idx) => {
+            if (player && idx !== currentIndex) {
+                player.pause().catch(e => console.log('Player pause blocked', e));
+            }
+        });
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        });
+    }
+
+    // Click on item to navigate
+    items.forEach((item, index) => {
+        item.addEventListener('click', (e) => {
+            if (index !== currentIndex) {
+                currentIndex = index;
+                updateCarousel();
+            }
+        });
     });
 
-    if (isShowing) {
-        viewMoreBtn.textContent = 'View Less Projects';
-    } else {
-        viewMoreBtn.textContent = 'View More Projects';
-        // Optional: Scroll back up to the portfolio section when hiding
-        document.getElementById('portfolio').scrollIntoView({ behavior: 'smooth' });
+    // Touch support (swipe)
+    let touchStartX = 0;
+    let touchEndX = 0;
+    const carouselContainer = document.querySelector('.portfolio-carousel-wrapper');
+
+    if (carouselContainer) {
+        carouselContainer.addEventListener('touchstart', e => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        carouselContainer.addEventListener('touchend', e => {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        });
     }
+
+    function handleSwipe() {
+        if (touchEndX < touchStartX - 50) {
+            // Swipe left -> next
+            currentIndex = (currentIndex + 1) % items.length;
+            updateCarousel();
+        } else if (touchEndX > touchStartX + 50) {
+            // Swipe right -> prev
+            currentIndex = (currentIndex - 1 + items.length) % items.length;
+            updateCarousel();
+        }
+    }
+
+    updateCarousel();
 }
 
 /**

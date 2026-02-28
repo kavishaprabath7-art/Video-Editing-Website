@@ -29,7 +29,7 @@
                 <a href="#about" class="nav-link">About</a>
                 <a href="#portfolio" class="nav-link">Portfolio</a>
                 <a href="#services" class="nav-link">Services</a>
-                <a href="#contact" class="btn btn-primary btn-sm">Let's Talk</a>
+                <a href="#" id="navContactBtn" class="btn btn-primary btn-sm">Let's Talk</a>
             </nav>
             <div class="mobile-menu-btn">
                 <span></span>
@@ -60,9 +60,7 @@
             </p>
             <div class="hero-cta fade-in" style="transition-delay: 0.4s;">
                 <a href="#portfolio" class="btn btn-solid">View Portfolio</a>
-                <a href="#contact" class="btn btn-primary"
-                    onclick="document.getElementById('contact').scrollIntoView({behavior: 'smooth'}); return false;">Work
-                    With Me</a>
+                <a href="#" id="heroContactBtn" class="btn btn-primary">Work With Me</a>
             </div>
 
             <div class="showreel-preview fade-in" style="transition-delay: 0.6s;">
@@ -196,108 +194,106 @@
                     commercial projects, social media content, and event highlights.</p>
             </div>
 
-            <div class="portfolio-grid">
-                <!-- Project 1 -->
-                <div class="portfolio-item glass-panel fade-in" style="transition-delay: 0.3s;">
-                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
-                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
-                                src="https://player.vimeo.com/video/1166923241?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                                frameborder="0"
-                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                                title="dry ice project"></iframe></div>
-                        <script src="https://player.vimeo.com/api/player.js"></script>
+            <div class="portfolio-carousel-wrapper"
+                style="position: relative; width: 100%; overflow: hidden; padding: 40px 0;">
+                <button class="carousel-btn prev-btn" id="prevBtn"
+                    style="position: absolute; left: 10px; top: 50%; transform: translateY(-50%); z-index: 20; background: rgba(0,0,0,0.5); border: 1px solid var(--color-primary); color: var(--color-primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">&#10094;</button>
+                <div class="portfolio-carousel" id="portfolioCarousel"
+                    style="display: flex; justify-content: center; align-items: center; perspective: 1000px; height: 650px; position: relative; width: 100%; max-width: 1000px; margin: 0 auto;">
+
+                    <!-- Project 1 (Formerly Project 2): Timeline Animation Movie -->
+                    <div class="portfolio-item glass-panel" data-index="0">
+                        <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                            <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                    src="https://player.vimeo.com/video/1166922976?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    frameborder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"
+                                    title="timeline animation movie" class="vimeo-iframe"></iframe></div>
+                        </div>
+                        <div class="portfolio-info text-center">
+                            <span class="text-secondary"
+                                style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Animation</span>
+                            <h3 style="margin: 8px 0; font-size: 1.4rem;">Timeline Animation Movie</h3>
+                        </div>
                     </div>
-                    <div class="portfolio-info">
-                        <span class="text-primary"
-                            style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Commercial</span>
-                        <h3 style="margin: 8px 0; font-size: 1.4rem;">Dry Ice Promotion Video</h3>
+
+                    <!-- Project 2 (Formerly Project 1): Dry Ice -->
+                    <div class="portfolio-item glass-panel" data-index="1">
+                        <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                            <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                    src="https://player.vimeo.com/video/1166923241?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    frameborder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"
+                                    title="dry ice project" class="vimeo-iframe"></iframe></div>
+                        </div>
+                        <div class="portfolio-info text-center">
+                            <span class="text-primary"
+                                style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Commercial</span>
+                            <h3 style="margin: 8px 0; font-size: 1.4rem;">Dry Ice Promotion Video</h3>
+                        </div>
                     </div>
+
+                    <!-- Project 3: Dan Koe Style -->
+                    <div class="portfolio-item glass-panel" data-index="2">
+                        <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                            <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                    src="https://player.vimeo.com/video/1166922921?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    frameborder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"
+                                    title="The Dan Koe style video prj" class="vimeo-iframe"></iframe></div>
+                        </div>
+                        <div class="portfolio-info text-center">
+                            <span class="text-primary"
+                                style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Commercial</span>
+                            <h3 style="margin: 8px 0; font-size: 1.4rem;">The Dan Koe Style Video</h3>
+                        </div>
+                    </div>
+
+                    <!-- Project 4: Airbnb Edit -->
+                    <div class="portfolio-item glass-panel" data-index="3">
+                        <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                            <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                    src="https://player.vimeo.com/video/1166922380?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    frameborder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"
+                                    title="the airbnb business edit" class="vimeo-iframe"></iframe></div>
+                        </div>
+                        <div class="portfolio-info text-center">
+                            <span
+                                style="color: #FFD700; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Showreel</span>
+                            <h3 style="margin: 8px 0; font-size: 1.4rem;">The Airbnb Business Edit</h3>
+                        </div>
+                    </div>
+
+                    <!-- Project 5: Mr Beast Edit -->
+                    <div class="portfolio-item glass-panel" data-index="4">
+                        <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
+                            <div style="padding:177.78% 0 0 0;position:relative;"><iframe
+                                    src="https://player.vimeo.com/video/1166922195?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
+                                    frameborder="0"
+                                    allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
+                                    referrerpolicy="strict-origin-when-cross-origin"
+                                    style="position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;"
+                                    title="mr beast edit project" class="vimeo-iframe"></iframe></div>
+                        </div>
+                        <div class="portfolio-info text-center">
+                            <span
+                                style="color: #FFD700; font-size: 0.85rem; font-weight: 600; text-transform: uppercase;">Showreel</span>
+                            <h3 style="margin: 8px 0; font-size: 1.4rem;">Mr Beast Style Edit</h3>
+                        </div>
+                    </div>
+
                 </div>
-
-                <!-- Project 2 -->
-                <div class="portfolio-item glass-panel fade-in" style="transition-delay: 0.4s;">
-                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
-                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
-                                src="https://player.vimeo.com/video/1166922976?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                                frameborder="0"
-                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                                title="timeline animation movie"></iframe></div>
-                        <script src="https://player.vimeo.com/api/player.js"></script>
-                    </div>
-                    <div class="portfolio-info">
-                        <span class="text-secondary"
-                            style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Animation</span>
-                        <h3 style="margin: 8px 0; font-size: 1.4rem;">Timeline Animation Movie</h3>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="portfolio-item glass-panel fade-in" style="transition-delay: 0.5s;">
-                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
-                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
-                                src="https://player.vimeo.com/video/1166922921?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                                frameborder="0"
-                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                                title="The Dan Koe style video prj"></iframe></div>
-                        <script src="https://player.vimeo.com/api/player.js"></script>
-                    </div>
-                    <div class="portfolio-info">
-                        <span class="text-primary"
-                            style="font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Commercial</span>
-                        <h3 style="margin: 8px 0; font-size: 1.4rem;">The Dan Koe Style Video</h3>
-                    </div>
-                </div>
-
-                <!-- Project 4 (Hidden by default) -->
-                <div class="portfolio-item glass-panel fade-in hidden-project" style="transition-delay: 0.6s;">
-                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
-                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
-                                src="https://player.vimeo.com/video/1166922380?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                                frameborder="0"
-                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                                title="the airbnb business edit"></iframe></div>
-                        <script src="https://player.vimeo.com/api/player.js"></script>
-                    </div>
-                    <div class="portfolio-info">
-                        <span
-                            style="color: #FFD700; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Showreel</span>
-                        <h3 style="margin: 8px 0; font-size: 1.4rem;">The Airbnb Business Edit</h3>
-                    </div>
-                </div>
-
-                <!-- Project 5 (Hidden by default) -->
-                <div class="portfolio-item glass-panel fade-in hidden-project" style="transition-delay: 0.7s;">
-                    <div style="border-radius: 8px; overflow: hidden; margin-bottom: 20px;">
-                        <div style="padding:177.78% 0 0 0;position:relative;"><iframe
-                                src="https://player.vimeo.com/video/1166922195?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-                                frameborder="0"
-                                allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share"
-                                referrerpolicy="strict-origin-when-cross-origin"
-                                style="position:absolute;top:0;left:0;width:100%;height:100%;"
-                                title="mr beast edit project"></iframe></div>
-                        <script src="https://player.vimeo.com/api/player.js"></script>
-                    </div>
-                    <div class="portfolio-info">
-                        <span
-                            style="color: #FFD700; font-size: 0.85rem; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;">Showreel</span>
-                        <h3 style="margin: 8px 0; font-size: 1.4rem;">Mr Beast Style Edit</h3>
-                    </div>
-                </div>
-
-
-            </div>
-
-            <div class="text-center fade-in" style="margin-top: 60px; transition-delay: 0.7s;">
-                <button id="view-more-btn" class="btn btn-primary" onclick="toggleProjects()"
-                    style="cursor: pointer; font-family: inherit; font-size: 1rem;">View More Projects</button>
+                <button class="carousel-btn next-btn" id="nextBtn"
+                    style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); z-index: 20; background: rgba(0,0,0,0.5); border: 1px solid var(--color-primary); color: var(--color-primary); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: all 0.3s ease;">&#10095;</button>
             </div>
         </div>
     </section>
@@ -329,7 +325,7 @@
                         <li><span class="check">✓</span> Up to 5 mins final length</li>
                         <li><span class="check">✓</span> 1 Revision</li>
                     </ul>
-                    <a href="#contact" class="btn btn-primary"
+                    <a href="#" class="btn btn-primary open-sidebar-btn"
                         style="width: 100%; text-align: center; margin-top: auto;">Request Quote</a>
                 </div>
 
@@ -358,7 +354,7 @@
                         <li><span class="check text-primary">✓</span> Up to 15 mins final length</li>
                         <li><span class="check text-primary">✓</span> 3 Revisions</li>
                     </ul>
-                    <a href="#contact" class="btn btn-solid"
+                    <a href="#" class="btn btn-solid open-sidebar-btn"
                         style="width: 100%; text-align: center; margin-top: auto;">Request Quote</a>
                 </div>
 
@@ -378,7 +374,7 @@
                         <li><span class="check text-secondary">✓</span> Any length</li>
                         <li><span class="check text-secondary">✓</span> Unlimited Revisions</li>
                     </ul>
-                    <a href="#contact" class="btn btn-primary"
+                    <a href="#" class="btn btn-primary open-sidebar-btn"
                         style="width: 100%; text-align: center; margin-top: auto;">Request Quote</a>
                 </div>
             </div>
@@ -400,34 +396,36 @@
         <div class="cinematic-blur"></div>
 
         <div class="container relative-z">
-            <div class="contact-grid align-center">
+            <div class="contact-grid align-center"
+                style="grid-template-columns: 1fr; max-width: 600px; margin: 0 auto; text-align: center;">
                 <div class="contact-info fade-in slide-up">
                     <h2 class="section-title">Let's Create Something <span class="text-secondary">Cinematic</span></h2>
-                    <p class="text-muted" style="margin-bottom: 40px; font-size: 1.1rem; max-width: 400px;">
-                        Tell me about your project and let's bring your vision to life.
+                    <p class="text-muted"
+                        style="margin-bottom: 30px; font-size: 1.1rem; max-width: 500px; margin-left: auto; margin-right: auto;">
+                        Ready to bring your vision to life? Let's discuss your project requirements, budget, and
+                        timeline.
                     </p>
 
-                    <div class="contact-methods">
-                        <div class="method glass-panel">
+                    <button class="btn btn-glowing" id="openSidebarBtn"
+                        style="font-size: 1.2rem; padding: 15px 40px; border-radius: 50px; cursor: pointer; border: none; outline: none; margin-bottom: 40px;">Let's
+                        Talk &rarr;</button>
+
+                    <div class="contact-methods"
+                        style="display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; text-align: left;">
+                        <div class="method glass-panel" style="flex: 1; min-width: 280px; text-align: center;">
                             <h4>Email Me</h4>
                             <a href="mailto:kaweeshawarnakula@gmail.com" class="text-primary"
-                                style="word-break: break-all; text-decoration: none;">kaweeshawarnakula@gmail.com</a>
+                                style="word-break: normal; white-space: nowrap; font-size: 1.05rem; text-decoration: none;">kaweeshawarnakula@gmail.com</a>
                         </div>
-                        <div class="method glass-panel" style="margin-top: 20px;">
-                            <h4>Chat with Me</h4>
-                            <div style="margin-top: 10px;">
-                                <a href="https://wa.me/94773714459" target="_blank" class="social-icon"
-                                    style="width: 50px; height: 50px; background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3);"
-                                    onmouseover="this.style.background='#25D366'"
-                                    onmouseout="this.style.background='rgba(37, 211, 102, 0.1)'">
+                        <div class="method glass-panel" style="flex: 1; min-width: 280px; text-align: center;">
+                            <h4>Socials & Chat</h4>
+                            <div class="social-links"
+                                style="margin-top: 15px; display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; align-items: center;">
+                                <a href="https://wa.me/94773714459" target="_blank" class="social-icon" title="WhatsApp"
+                                    style="width: 35px; height: 35px; background: rgba(37, 211, 102, 0.1); border: 1px solid rgba(37, 211, 102, 0.3);">
                                     <img src="whatsapp.png" alt="WhatsApp"
-                                        style="width: 28px; height: 28px; object-fit: contain;">
+                                        style="width: 20px; height: 20px; object-fit: contain;">
                                 </a>
-                            </div>
-                        </div>
-                        <div class="method glass-panel" style="margin-top: 20px;">
-                            <h4>Follow Me</h4>
-                            <div class="social-links" style="margin-top: 10px;">
                                 <a href="https://www.tiktok.com/@chamaraedit?_r=1&_t=ZN-9478i52LAwA" target="_blank"
                                     class="social-icon" title="TikTok">
                                     <img src="tiktok .png" alt="TikTok"
@@ -457,56 +455,64 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="contact-form-wrapper glass-panel cinematic-form fade-in slide-up"
-                    style="transition-delay: 0.2s;">
-                    <!-- Using Google Apps Script for email forwarding -->
-                    <form id="contactForm" class="contact-form">
-                        <div class="form-group">
-                            <label for="name">Name / Brand</label>
-                            <input type="text" id="name" name="name" placeholder="Enter your name" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="Enter your email" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="project_type">Project Category</label>
-                            <select id="project_type" name="project_type" required>
-                                <option value="" disabled selected>Select a category...</option>
-                                <option value="Wedding Film">Wedding Film</option>
-                                <option value="YouTube Video">YouTube Video</option>
-                                <option value="Commercial Ad">Commercial Ad</option>
-                                <option value="Social Media Edit">Social Media Edit</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="service">Interested Service</label>
-                            <select id="service" name="service" required>
-                                <option value="" disabled selected>Select a service...</option>
-                                <option value="Basic Editing">Basic Editing</option>
-                                <option value="Advanced Cinematic Edit">Advanced Cinematic Edit</option>
-                                <option value="Full Production">Full Production</option>
-                                <option value="Other">Other</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="budget">Budget Range (Optional)</label>
-                            <input type="text" id="budget" name="budget" placeholder="e.g. $500 - $1000">
-                        </div>
-                        <div class="form-group">
-                            <label for="message">Project Details</label>
-                            <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..."
-                                required></textarea>
-                        </div>
-
-                        <button type="submit" class="btn btn-glowing"
-                            style="width: 100%; border: none; background: #5a67d8; color: white;">Send Message</button>
-                    </form>
-                </div>
             </div>
         </div>
+    </section>
+
+    <!-- Sidebar Overlay & Container -->
+    <div id="sidebarOverlay" class="sidebar-overlay"></div>
+    <div id="contactSidebar" class="contact-sidebar glass-panel cinematic-form">
+        <div class="sidebar-header">
+            <h3>Start a Project</h3>
+            <button id="closeSidebarBtn" class="close-btn">&times;</button>
+        </div>
+        <div class="sidebar-body">
+            <!-- Using Google Apps Script for email forwarding -->
+            <form id="contactForm" class="contact-form">
+                <div class="form-group">
+                    <label for="name">Name / Brand</label>
+                    <input type="text" id="name" name="name" placeholder="Enter your name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email Address</label>
+                    <input type="email" id="email" name="email" placeholder="Enter your email" required>
+                </div>
+                <div class="form-group">
+                    <label for="project_type">Project Category</label>
+                    <select id="project_type" name="project_type" required>
+                        <option value="" disabled selected>Select a category...</option>
+                        <option value="Wedding Film">Wedding Film</option>
+                        <option value="YouTube Video">YouTube Video</option>
+                        <option value="Commercial Ad">Commercial Ad</option>
+                        <option value="Social Media Edit">Social Media Edit</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="service">Interested Service</label>
+                    <select id="service" name="service" required>
+                        <option value="" disabled selected>Select a service...</option>
+                        <option value="Basic Editing">Basic Editing</option>
+                        <option value="Advanced Cinematic Edit">Advanced Cinematic Edit</option>
+                        <option value="Full Production">Full Production</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="budget">Budget Range (Optional)</label>
+                    <input type="text" id="budget" name="budget" placeholder="e.g. $500 - $1000">
+                </div>
+                <div class="form-group">
+                    <label for="message">Project Details</label>
+                    <textarea id="message" name="message" rows="5" placeholder="Tell me about your project..."
+                        required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-glowing btn-submit-contact" style="width: 100%; border: none;">Send
+                    Message</button>
+            </form>
+        </div>
+    </div>
     </section>
 
     <!-- Footer -->
