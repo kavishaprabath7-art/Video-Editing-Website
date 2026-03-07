@@ -351,15 +351,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Hero Showreel Events
     const heroWrapper = document.querySelector('.hero .hero-showreel');
-    if (heroWrapper && heroPlayer) {
-        heroWrapper.addEventListener('mouseenter', () => playWithUnload(heroPlayer, fiverrPlayer));
-    }
 
     // Fiverr Showreel Events
     const fiverrWrapper = document.querySelector('.fiverr-showreel .hero-showreel');
-    if (fiverrWrapper && fiverrPlayer) {
-        fiverrWrapper.addEventListener('mouseenter', () => playWithUnload(fiverrPlayer, heroPlayer));
-    }
 
     // Auto-pause when scrolling out of view
     const videoObserverOptions = {
