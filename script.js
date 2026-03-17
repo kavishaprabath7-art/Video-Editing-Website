@@ -95,8 +95,8 @@ function initScrollAnimations() {
 
     const observerOptions = {
         root: null,
-        rootMargin: '0px',
-        threshold: 0.15
+        rootMargin: '0px 0px -20px 0px',
+        threshold: 0.05
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
@@ -181,6 +181,9 @@ function initPortfolioCarousel() {
                 // When they click the overlay on the ACTIVE item, remove the overlay to let them play the video
                 touchOverlay.addEventListener('click', (e) => {
                     if (item.classList.contains('active')) {
+                        // Prevent this click from bubbling up to the item's carousel navigation click
+                        e.stopPropagation();
+
                         touchOverlay.style.display = 'none';
                         if (iframeWrapper) iframeWrapper.style.pointerEvents = 'auto';
                         if (iframe) iframe.style.pointerEvents = 'auto';
@@ -195,6 +198,8 @@ function initPortfolioCarousel() {
             } else {
                 // Reset overlay when carousel moves
                 touchOverlay.style.display = 'block';
+                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'none';
+                if (iframe) iframe.style.pointerEvents = 'none';
             }
 
             if (index === currentIndex) {
@@ -203,18 +208,30 @@ function initPortfolioCarousel() {
                 item.style.zIndex = '10';
                 item.style.opacity = '1';
                 item.style.filter = 'blur(0px)';
+
+                // Ensure active item is clickable
+                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'auto';
+                if (iframe) iframe.style.pointerEvents = 'auto';
             } else if (index === (currentIndex - 1 + items.length) % items.length) {
                 item.classList.add('prev');
                 item.style.transform = 'translateX(-75%) scale(0.8) translateZ(-100px)';
                 item.style.zIndex = '5';
                 item.style.opacity = '0.6';
                 item.style.filter = 'blur(6px)';
+
+                // Disable inactive items
+                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'none';
+                if (iframe) iframe.style.pointerEvents = 'none';
             } else if (index === (currentIndex + 1) % items.length) {
                 item.classList.add('next');
                 item.style.transform = 'translateX(75%) scale(0.8) translateZ(-100px)';
                 item.style.zIndex = '5';
                 item.style.opacity = '0.6';
                 item.style.filter = 'blur(6px)';
+
+                // Disable inactive items
+                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'none';
+                if (iframe) iframe.style.pointerEvents = 'none';
             } else {
                 // Determine if it should hide left or right
                 let diff = index - currentIndex;
@@ -267,25 +284,35 @@ function initPortfolioCarousel() {
     // Touch support (swipe)
     let touchStartX = 0;
     let touchEndX = 0;
+    let touchStartY = 0;
+    let touchEndY = 0;
     const carouselContainer = document.querySelector('.portfolio-carousel-wrapper');
 
     if (carouselContainer) {
         carouselContainer.addEventListener('touchstart', e => {
             touchStartX = e.changedTouches[0].screenX;
-        });
+            touchStartY = e.changedTouches[0].screenY;
+        }, { passive: true });
 
         carouselContainer.addEventListener('touchend', e => {
             touchEndX = e.changedTouches[0].screenX;
+            touchEndY = e.changedTouches[0].screenY;
             handleSwipe();
         });
     }
 
     function handleSwipe() {
-        if (touchEndX < touchStartX - 50) {
+        // If the user scrolled vertically more than horizontally, ignore the swipe (it's a scroll)
+        if (Math.abs(touchEndY - touchStartY) > Math.abs(touchEndX - touchStartX)) {
+            return;
+        }
+
+        // Increase threshold to prevent accidental swipes on tap
+        if (touchEndX < touchStartX - 60) {
             // Swipe left -> next
             currentIndex = (currentIndex + 1) % items.length;
             updateCarousel();
-        } else if (touchEndX > touchStartX + 50) {
+        } else if (touchEndX > touchStartX + 60) {
             // Swipe right -> prev
             currentIndex = (currentIndex - 1 + items.length) % items.length;
             updateCarousel();
