@@ -1,446 +1,419 @@
 /**
- * Cinematic Portfolio Main Script
+ * KAWEESHA CHAMARA — Portfolio  |  script.js  v2
+ * Fully audited, bug-fixed, optimised
+ *
+ * Modules:
+ *  1. Helpers
+ *  2. Nav — scroll dim + mobile drawer
+ *  3. Scroll reveal — IntersectionObserver
+ *  4. Work grid — filter tabs + lightbox
+ *  5. Vimeo — pause hero/fiverr on scroll-out
+ *  6. Sidebar — open/close + touch-swipe
+ *  7. Contact form — Google Sheets (no-cors)
+ *  8. Magnetic buttons — CSS-var approach (no transform conflict)
+ *  9. Smooth scroll CTA
  */
 
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize fade-in animations
-    initScrollAnimations();
+'use strict';
 
-    // Navbar scroll effect
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-        if (window.scrollY > 50) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
-        }
+// ─────────────────────────────────────────────────────────────
+// 1. HELPERS
+// ─────────────────────────────────────────────────────────────
+const $ = (sel, ctx = document) => ctx.querySelector(sel);
+const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
+
+// ─────────────────────────────────────────────────────────────
+// 2. NAV
+// ─────────────────────────────────────────────────────────────
+(function initNav() {
+  const nav    = $('#nav');
+  const burger = $('#navBurger');
+  const drawer = $('#navLinks');
+  if (!nav || !burger || !drawer) return;
+
+  // Scroll → frosted nav
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    requestAnimationFrame(() => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+      ticking = false;
     });
+    ticking = true;
+  }, { passive: true });
 
-    // Mobile menu toggle
-    const mobileBtn = document.querySelector('.mobile-menu-btn');
-    const navLinks = document.querySelector('.nav-links');
+  // Burger toggle
+  function openDrawer() {
+    drawer.classList.add('active');
+    burger.classList.add('open');
+    burger.setAttribute('aria-expanded', 'true');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeDrawer() {
+    drawer.classList.remove('active');
+    burger.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }
 
-    if (mobileBtn) {
-        mobileBtn.addEventListener('click', () => {
-            navLinks.classList.toggle('active');
-        });
+  burger.addEventListener('click', () =>
+    drawer.classList.contains('active') ? closeDrawer() : openDrawer()
+  );
 
-        const navLinkItems = document.querySelectorAll('.nav-link');
-        navLinkItems.forEach(link => {
-            link.addEventListener('click', () => {
-                navLinks.classList.remove('active');
-            });
-        });
-    }
+  // Close on nav link or CTA click
+  $$('a, button', drawer).forEach(el =>
+    el.addEventListener('click', closeDrawer)
+  );
 
-    // Contact Sidebar Toggle
-    const sidebar = document.getElementById('contactSidebar');
-    const overlay = document.getElementById('sidebarOverlay');
-    const openBtn = document.getElementById('openSidebarBtn');
-    const closeBtn = document.getElementById('closeSidebarBtn');
+  // Close on Escape
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('active')) closeDrawer();
+  });
 
-    function openSidebar(e) {
-        if (e) e.preventDefault();
-        sidebar.classList.add('active');
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden'; // Prevent scrolling
-    }
+  // FIX: "Let's Talk" button in nav also opens sidebar
+  const navContactBtn = $('#navContactBtn');
+  if (navContactBtn) navContactBtn.addEventListener('click', () => { closeDrawer(); openSidebar(); });
+})();
 
-    function closeSidebar(e) {
-        if (e) e.preventDefault();
-        sidebar.classList.remove('active');
-        overlay.classList.remove('active');
-        document.body.style.overflow = '';
-    }
+// ─────────────────────────────────────────────────────────────
+// 3. SCROLL REVEAL
+// ─────────────────────────────────────────────────────────────
+(function initReveal() {
+  const els = $$('.reveal');
+  if (!els.length) return;
 
-    // Attach to all related buttons
-    const triggerBtns = [
-        document.getElementById('openSidebarBtn'),
-        document.getElementById('navContactBtn'),
-        document.getElementById('heroContactBtn'),
-        ...document.querySelectorAll('.open-sidebar-btn')
-    ];
-
-    triggerBtns.forEach(btn => {
-        if (btn) btn.addEventListener('click', openSidebar);
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('is-visible');
+        io.unobserve(e.target);
+      }
     });
+  }, {
+    rootMargin: '0px 0px -32px 0px',
+    threshold: 0.04
+  });
 
-    if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
-    if (overlay) overlay.addEventListener('click', closeSidebar);
+  els.forEach(el => io.observe(el));
+})();
 
-    // Sidebar swipe to close on mobile
-    let sidebarTouchStart = 0;
-    if (sidebar) {
-        sidebar.addEventListener('touchstart', e => {
-            sidebarTouchStart = e.changedTouches[0].screenX;
-        }, { passive: true });
+// ─────────────────────────────────────────────────────────────
+// 4. WORK GRID — filter tabs + lightbox
+// ─────────────────────────────────────────────────────────────
+(function initWorkGrid() {
+  const cards      = $$('.work-card');
+  const filterBtns = $$('.filter-btn');
+  if (!cards.length) return;
 
-        sidebar.addEventListener('touchend', e => {
-            if (e.changedTouches[0].screenX > sidebarTouchStart + 50) {
-                closeSidebar();
-            }
-        });
-    }
-
-    initPortfolioCarousel();
-});
-
-/**
- * Intersection Observer for fade-in animations on scroll
- */
-function initScrollAnimations() {
-    const fadeElements = document.querySelectorAll('.fade-in');
-
-    if (fadeElements.length === 0) return;
-
-    const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -20px 0px',
-        threshold: 0.05
-    };
-
-    const observer = new IntersectionObserver((entries, observer) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible');
-
-                // Add visible class specifically for slide-up items
-                if (entry.target.classList.contains('slide-up')) {
-                    entry.target.classList.add('visible');
-                }
-
-                observer.unobserve(entry.target);
-            }
-        });
-    }, observerOptions);
-
-    fadeElements.forEach(element => {
-        observer.observe(element);
+  // ── Filter tabs ──────────────────────────────────────────
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
+      btn.classList.add('active');
+      btn.setAttribute('aria-selected', 'true');
+      const filter = btn.dataset.filter;
+      cards.forEach(card => {
+        const hide = filter !== 'all' && card.dataset.category !== filter;
+        card.classList.toggle('hidden', hide);
+      });
     });
+  });
+
+  // ── Lightbox elements ─────────────────────────────────────
+  const lb        = $('#lightbox');
+  const lbOverlay = $('#lightboxOverlay');
+  const lbClose   = $('#lightboxClose');
+  const lbFrame   = $('#lightboxFrame');
+  const lbTag     = $('#lbTag');
+  const lbTitle   = $('#lbTitle');
+  const lbClient  = $('#lbClient');
+  const lbRole    = $('#lbRole');
+  const lbTools   = $('#lbTools');
+  const lbYear    = $('#lbYear');
+  if (!lb) return;
+
+  let currentCard = null;
+
+  function openLightbox(card) {
+    currentCard = card;
+    const id = card.dataset.vimeoId;
+
+    // Populate meta
+    lbTag.textContent    = card.dataset.category.charAt(0).toUpperCase() + card.dataset.category.slice(1);
+    lbTitle.textContent  = card.dataset.title;
+    lbClient.textContent = card.dataset.client;
+    lbRole.textContent   = card.dataset.role;
+    lbTools.textContent  = card.dataset.tools;
+    lbYear.textContent   = card.dataset.year;
+
+    // Inject full interactive Vimeo player
+    lbFrame.innerHTML = '';
+    const iframe = document.createElement('iframe');
+    iframe.src         = `https://player.vimeo.com/video/${id}?badge=0&autopause=0&player_id=lb&app_id=58479`;
+    iframe.allow       = 'autoplay; fullscreen; picture-in-picture; clipboard-write';
+    iframe.setAttribute('allowfullscreen', '');
+    iframe.setAttribute('title', card.dataset.title);
+    lbFrame.appendChild(iframe);
+
+    // Show lightbox
+    lb.hidden = false;
+    requestAnimationFrame(() => {
+      lb.classList.add('active');
+      lbOverlay.classList.add('active');
+    });
+    document.body.style.overflow = 'hidden';
+    lbClose.focus();
+
+    // FIX: trap focus inside lightbox
+    lb.addEventListener('keydown', trapFocus);
+  }
+
+  function closeLightbox() {
+    lb.classList.remove('active');
+    lbOverlay.classList.remove('active');
+    lb.removeEventListener('keydown', trapFocus);
+
+    setTimeout(() => {
+      lb.hidden = true;
+      lbFrame.innerHTML = ''; // stops video playback/network requests
+      document.body.style.overflow = '';
+      if (currentCard) { currentCard.focus(); currentCard = null; }
+    }, 460);
+  }
+
+  // Basic focus trap inside lightbox
+  function trapFocus(e) {
+    if (e.key !== 'Tab') return;
+    const focusable = $$('button, a, input, select, textarea, [tabindex]:not([tabindex="-1"])', lb);
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last  = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  }
+
+  // Open on click / Enter / Space
+  cards.forEach(card => {
+    card.addEventListener('click', () => openLightbox(card));
+    card.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(card); }
+    });
+  });
+
+  lbClose.addEventListener('click', closeLightbox);
+  lbOverlay.addEventListener('click', closeLightbox);
+
+  // Keyboard: Escape close, ArrowLeft/Right browse
+  document.addEventListener('keydown', e => {
+    if (!lb.classList.contains('active')) return;
+    if (e.key === 'Escape') { closeLightbox(); return; }
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+
+    const visible = cards.filter(c => !c.classList.contains('hidden'));
+    if (visible.length < 2) return;
+    const idx = visible.indexOf(currentCard);
+    const next = e.key === 'ArrowRight'
+      ? visible[(idx + 1) % visible.length]
+      : visible[(idx - 1 + visible.length) % visible.length];
+
+    closeLightbox();
+    setTimeout(() => openLightbox(next), 470);
+  });
+
+  // "Hire Me" button inside lightbox opens sidebar
+  const lbHireBtn = $('#lbHireBtn');
+  if (lbHireBtn) lbHireBtn.addEventListener('click', () => { closeLightbox(); setTimeout(openSidebar, 470); });
+})();
+
+// ─────────────────────────────────────────────────────────────
+// 5. VIMEO — pause hero + fiverr on scroll-out
+// ─────────────────────────────────────────────────────────────
+(function initVimeoPause() {
+  // Only runs if Vimeo SDK loaded successfully
+  if (typeof Vimeo === 'undefined') return;
+
+  const heroEl   = $('#hero-vimeo-player');
+  const fiverrEl = $('#fiverr-vimeo-player');
+
+  const heroPlayer   = heroEl   ? new Vimeo.Player(heroEl)   : null;
+  const fiverrPlayer = fiverrEl ? new Vimeo.Player(fiverrEl) : null;
+
+  // Pause one when the other plays
+  if (heroPlayer && fiverrPlayer) {
+    heroPlayer.on('play',   () => fiverrPlayer.pause().catch(() => {}));
+    fiverrPlayer.on('play', () => heroPlayer.pause().catch(() => {}));
+  }
+
+  // Pause when element scrolls out of view
+  function watchVimeo(el, player) {
+    if (!el || !player) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (!entry.isIntersecting) player.pause().catch(() => {});
+    }, { threshold: 0.1 });
+    io.observe(el);
+  }
+
+  watchVimeo(heroEl?.closest('.hero__reel-wrap'),  heroPlayer);
+  watchVimeo(fiverrEl?.closest('.video-frame'),    fiverrPlayer);
+})();
+
+// ─────────────────────────────────────────────────────────────
+// 6. SIDEBAR — open / close / swipe
+// ─────────────────────────────────────────────────────────────
+// Defined as plain function (not IIFE) so other modules can call openSidebar()
+function openSidebar() {
+  const sidebar = $('#contactSidebar');
+  const overlay = $('#sidebarOverlay');
+  if (!sidebar) return;
+  sidebar.classList.add('active');
+  overlay.classList.add('active');
+  document.body.style.overflow = 'hidden';
+  // Focus first field
+  const firstField = $('input, select, textarea', sidebar);
+  setTimeout(() => firstField?.focus(), 50);
 }
 
-/**
- * Portfolio Coverflow Carousel
- */
-function initPortfolioCarousel() {
-    const items = document.querySelectorAll('.portfolio-carousel .portfolio-item');
-    if (!items.length) return;
-
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    let currentIndex = 0;
-
-    // Load vimeo players for portfolio
-    const vimeoPlayers = [];
-    if (typeof Vimeo !== 'undefined') {
-        items.forEach(item => {
-            const iframe = item.querySelector('iframe');
-            if (iframe) {
-                vimeoPlayers.push(new Vimeo.Player(iframe));
-            } else {
-                vimeoPlayers.push(null);
-            }
-        });
-    }
-
-    function updateCarousel() {
-        items.forEach((item, index) => {
-            // Remove existing state classes
-            item.classList.remove('active', 'prev', 'next', 'hidden-left', 'hidden-right');
-            item.style.position = 'absolute';
-            item.style.transition = 'all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
-            item.style.width = '80%';
-            item.style.maxWidth = '450px';
-            item.style.cursor = 'pointer';
-
-            // Enable/disable pointer events on the iframe wrapper to prevent stealing clicks
-            const iframeWrapper = item.querySelector('div > div');
-            if (iframeWrapper) {
-                iframeWrapper.style.pointerEvents = 'none'; // Keep none by default to allow swiping on the parent
-            }
-
-            // Also enable events on iframe itself since we disabled it in HTML earlier
-            const iframe = item.querySelector('iframe');
-            if (iframe) {
-                iframe.style.pointerEvents = 'none'; // Keep none by default to allow swiping
-            }
-
-            // Create or manage a touch overlay for the active item
-            let touchOverlay = item.querySelector('.touch-overlay');
-            if (!touchOverlay) {
-                touchOverlay = document.createElement('div');
-                touchOverlay.className = 'touch-overlay';
-                touchOverlay.style.position = 'absolute';
-                touchOverlay.style.top = '0';
-                touchOverlay.style.left = '0';
-                touchOverlay.style.width = '100%';
-                touchOverlay.style.height = '100%';
-                touchOverlay.style.zIndex = '50';
-                item.appendChild(touchOverlay);
-
-                // When they click the overlay on the ACTIVE item, remove the overlay to let them play the video
-                touchOverlay.addEventListener('click', (e) => {
-                    if (item.classList.contains('active')) {
-                        // Prevent this click from bubbling up to the item's carousel navigation click
-                        e.stopPropagation();
-
-                        touchOverlay.style.display = 'none';
-                        if (iframeWrapper) iframeWrapper.style.pointerEvents = 'auto';
-                        if (iframe) iframe.style.pointerEvents = 'auto';
-
-                        // Try to auto-play if clicked
-                        const index = parseInt(item.getAttribute('data-index') || item.dataset.index);
-                        if (typeof index !== 'undefined' && vimeoPlayers[index]) {
-                            vimeoPlayers[index].play().catch(err => console.log(err));
-                        }
-                    }
-                });
-            } else {
-                // Reset overlay when carousel moves
-                touchOverlay.style.display = 'block';
-                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'none';
-                if (iframe) iframe.style.pointerEvents = 'none';
-            }
-
-            if (index === currentIndex) {
-                item.classList.add('active');
-                item.style.transform = 'translateX(0) scale(1) translateZ(0)';
-                item.style.zIndex = '10';
-                item.style.opacity = '1';
-                item.style.filter = 'blur(0px)';
-
-                // Ensure active item is clickable
-                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'auto';
-                if (iframe) iframe.style.pointerEvents = 'auto';
-            } else if (index === (currentIndex - 1 + items.length) % items.length) {
-                item.classList.add('prev');
-                item.style.transform = 'translateX(-75%) scale(0.8) translateZ(-100px)';
-                item.style.zIndex = '5';
-                item.style.opacity = '0.6';
-                item.style.filter = 'blur(6px)';
-
-                // Disable inactive items
-                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'none';
-                if (iframe) iframe.style.pointerEvents = 'none';
-            } else if (index === (currentIndex + 1) % items.length) {
-                item.classList.add('next');
-                item.style.transform = 'translateX(75%) scale(0.8) translateZ(-100px)';
-                item.style.zIndex = '5';
-                item.style.opacity = '0.6';
-                item.style.filter = 'blur(6px)';
-
-                // Disable inactive items
-                if (iframeWrapper) iframeWrapper.style.pointerEvents = 'none';
-                if (iframe) iframe.style.pointerEvents = 'none';
-            } else {
-                // Determine if it should hide left or right
-                let diff = index - currentIndex;
-                if (diff < 0) diff += items.length;
-                if (diff > items.length / 2) {
-                    item.classList.add('hidden-left');
-                    item.style.transform = 'translateX(-120%) scale(0.6) translateZ(-200px)';
-                } else {
-                    item.classList.add('hidden-right');
-                    item.style.transform = 'translateX(120%) scale(0.6) translateZ(-200px)';
-                }
-                item.style.zIndex = '1';
-                item.style.opacity = '0';
-                item.style.pointerEvents = 'none';
-            }
-        });
-
-        // Pause all players when carousel updates, user has to manually play current
-        vimeoPlayers.forEach((player, idx) => {
-            if (player && idx !== currentIndex) {
-                player.pause().catch(e => console.log('Player pause blocked', e));
-            }
-        });
-    }
-
-    if (prevBtn) {
-        prevBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + items.length) % items.length;
-            updateCarousel();
-        });
-    }
-
-    if (nextBtn) {
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex + 1) % items.length;
-            updateCarousel();
-        });
-    }
-
-    // Click on item to navigate
-    items.forEach((item, index) => {
-        item.addEventListener('click', (e) => {
-            if (index !== currentIndex) {
-                currentIndex = index;
-                updateCarousel();
-            }
-        });
-    });
-
-    // Touch support (swipe)
-    let touchStartX = 0;
-    let touchEndX = 0;
-    let touchStartY = 0;
-    let touchEndY = 0;
-    const carouselContainer = document.querySelector('.portfolio-carousel-wrapper');
-
-    if (carouselContainer) {
-        carouselContainer.addEventListener('touchstart', e => {
-            touchStartX = e.changedTouches[0].screenX;
-            touchStartY = e.changedTouches[0].screenY;
-        }, { passive: true });
-
-        carouselContainer.addEventListener('touchend', e => {
-            touchEndX = e.changedTouches[0].screenX;
-            touchEndY = e.changedTouches[0].screenY;
-            handleSwipe();
-        });
-    }
-
-    function handleSwipe() {
-        // If the user scrolled vertically more than horizontally, ignore the swipe (it's a scroll)
-        if (Math.abs(touchEndY - touchStartY) > Math.abs(touchEndX - touchStartX)) {
-            return;
-        }
-
-        // Increase threshold to prevent accidental swipes on tap
-        if (touchEndX < touchStartX - 60) {
-            // Swipe left -> next
-            currentIndex = (currentIndex + 1) % items.length;
-            updateCarousel();
-        } else if (touchEndX > touchStartX + 60) {
-            // Swipe right -> prev
-            currentIndex = (currentIndex - 1 + items.length) % items.length;
-            updateCarousel();
-        }
-    }
-
-    updateCarousel();
+function closeSidebar() {
+  const sidebar = $('#contactSidebar');
+  const overlay = $('#sidebarOverlay');
+  if (!sidebar) return;
+  sidebar.classList.remove('active');
+  overlay.classList.remove('active');
+  document.body.style.overflow = '';
 }
 
-/**
- * Vimeo Player interactions for Showreels
- */
-document.addEventListener('DOMContentLoaded', () => {
-    const heroShowreelIframe = document.getElementById('hero-vimeo-player');
-    const fiverrShowreelIframe = document.getElementById('fiverr-vimeo-player');
-    const heroCustomPoster = document.getElementById('hero-custom-poster');
+(function initSidebar() {
+  const sidebar  = $('#contactSidebar');
+  const overlay  = $('#sidebarOverlay');
+  const closeBtn = $('#closeSidebarBtn');
+  if (!sidebar) return;
 
-    let heroPlayer = null;
-    let fiverrPlayer = null;
+  // Build a deduped set of trigger elements.
+  // navContactBtn is already handled in initNav — exclude it here to prevent double-fire.
+  const triggers = new Set($$('.open-sidebar-btn'));
+  triggers.delete($('#navContactBtn'));           // handled in initNav
+  // heroContactBtn has no open-sidebar-btn class — add it explicitly
+  const heroContactBtn = $('#heroContactBtn');
+  if (heroContactBtn) triggers.add(heroContactBtn);
 
-    if (heroShowreelIframe && typeof Vimeo !== 'undefined') heroPlayer = new Vimeo.Player(heroShowreelIframe);
-    if (fiverrShowreelIframe && typeof Vimeo !== 'undefined') fiverrPlayer = new Vimeo.Player(fiverrShowreelIframe);
+  triggers.forEach(btn => btn.addEventListener('click', openSidebar));
 
-    const playWithUnload = (playerToPlay, playerToUnload) => {
-        if (!playerToPlay) return;
+  if (closeBtn) closeBtn.addEventListener('click', closeSidebar);
+  if (overlay)  overlay.addEventListener('click', closeSidebar);
 
-        // Unload the other player if it exists (stops it & reverts it)
-        if (playerToUnload) {
-            playerToUnload.unload().catch(e => console.log("Unload prevented:", e));
-        }
+  // Escape key
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && sidebar.classList.contains('active')) closeSidebar();
+  });
 
-        // Play the hovered/touched video unmuted
-        playerToPlay.setVolume(1).then(() => {
-            playerToPlay.play().catch(e => {
-                console.log("Auto-play prevented (usually requires interaction first):", e);
-            });
-        }).catch(e => console.log("Volume set prevented:", e));
-    };
+  // Swipe right to close on mobile
+  let swipeStartX = 0;
+  sidebar.addEventListener('touchstart', e => { swipeStartX = e.changedTouches[0].screenX; }, { passive: true });
+  sidebar.addEventListener('touchend',   e => {
+    if (e.changedTouches[0].screenX > swipeStartX + 70) closeSidebar();
+  }, { passive: true });
+})();
 
-    if (heroPlayer && fiverrPlayer) {
-        // Hero Player Events
-        heroPlayer.on('play', () => {
-            heroPlayer.setVolume(1);
-            if (heroCustomPoster) heroCustomPoster.style.opacity = '0';
-            fiverrPlayer.unload().catch(e => console.log("Unload prevented", e));
-        });
+// ─────────────────────────────────────────────────────────────
+// 7. CONTACT FORM — Google Apps Script → Google Sheets
+// ─────────────────────────────────────────────────────────────
+(function initForm() {
+  const form = $('#contactForm');
+  if (!form) return;
 
-        heroPlayer.on('pause', () => {
-            if (heroCustomPoster) heroCustomPoster.style.opacity = '1';
-        });
+  // Simple required-field check before submitting
+  function isValid() {
+    let ok = true;
+    $$('[required]', form).forEach(el => {
+      const invalid = !el.value.trim();
+      el.style.borderColor = invalid ? '#ff4d4f' : '';
+      if (invalid) ok = false;
+    });
+    return ok;
+  }
 
-        heroPlayer.on('ended', () => {
-            if (heroCustomPoster) heroCustomPoster.style.opacity = '1';
-        });
+  form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    if (!isValid()) return;
 
-        // Fiverr Player Events
-        fiverrPlayer.on('play', () => {
-            fiverrPlayer.setVolume(1);
-            if (heroCustomPoster) heroCustomPoster.style.opacity = '1';
-            heroPlayer.unload().catch(e => console.log("Unload prevented", e));
-        });
-    }
+    const btn = this.querySelector('[type="submit"]');
+    const orig = btn.textContent;
+    btn.textContent = 'Sending…';
+    btn.disabled = true;
 
-    // Hero Showreel Events
-    const heroWrapper = document.querySelector('.hero .hero-showreel');
+    const data = new FormData();
+    data.append('name',         (this.name?.value         || '').trim());
+    data.append('email',        (this.email?.value        || '').trim());
+    data.append('project_type', (this.project_type?.value || '').trim());
+    data.append('service',      (this.service?.value      || '').trim());
+    data.append('budget',       (this.budget?.value       || '').trim());
+    data.append('message',      (this.message?.value      || '').trim());
 
-    // Fiverr Showreel Events
-    const fiverrWrapper = document.querySelector('.fiverr-showreel .hero-showreel');
+    fetch('https://script.google.com/macros/s/AKfycby_THfWs8LRvciU1aiEAmymi6dUiM4-bAi24Dn7GrOQASjhdr0nunCOLOHgDX-iwbtzSw/exec', {
+      method: 'POST',
+      body: data,
+      mode: 'no-cors',
+    })
+      .then(() => {
+        this.reset();
+        $$('[required]', form).forEach(el => (el.style.borderColor = ''));
+        // Replace button with a success message briefly
+        btn.textContent = '✓ Message sent!';
+        btn.style.background = '#2a5c00';
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.style.background = '';
+          btn.disabled = false;
+          closeSidebar();
+        }, 2600);
+      })
+      .catch(() => {
+        alert('Something went wrong. Please try emailing directly: kaweeshawarnakula@gmail.com');
+        btn.textContent = orig;
+        btn.disabled = false;
+      });
+  });
 
-    // Auto-pause when scrolling out of view
-    const videoObserverOptions = {
-        root: null,
-        rootMargin: '0px',
-        threshold: 0.1 // Pause when only 10% is visible
-    };
+  // Reset red border on input
+  $$('[required]', form).forEach(el =>
+    el.addEventListener('input', () => (el.style.borderColor = ''))
+  );
+})();
 
-    const videoObserver = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (!entry.isIntersecting) {
-                if (entry.target === heroWrapper && heroPlayer) {
-                    heroPlayer.pause().catch(e => console.log('Pause blocked', e));
-                } else if (entry.target === fiverrWrapper && fiverrPlayer) {
-                    fiverrPlayer.pause().catch(e => console.log('Pause blocked', e));
-                }
-            }
-        });
-    }, videoObserverOptions);
+// ─────────────────────────────────────────────────────────────
+// 8. MAGNETIC BUTTONS — CSS custom-property approach
+//    FIX: sets --tx / --ty so the CSS transform: translate(var(--tx),var(--ty))
+//    works independently of any :hover translateY — no conflict
+// ─────────────────────────────────────────────────────────────
+(function initMagnetic() {
+  // Skip on touch devices
+  if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
-    if (heroWrapper) videoObserver.observe(heroWrapper);
-    if (fiverrWrapper) videoObserver.observe(fiverrWrapper);
-});
+  $$('.btn-magnetic').forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const r  = btn.getBoundingClientRect();
+      const cx = r.left + r.width  / 2;
+      const cy = r.top  + r.height / 2;
+      // Max pull: 8px — subtle, not distracting
+      btn.style.setProperty('--tx', `${(e.clientX - cx) * 0.18}px`);
+      btn.style.setProperty('--ty', `${(e.clientY - cy) * 0.18}px`);
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.setProperty('--tx', '0px');
+      btn.style.setProperty('--ty', '0px');
+    });
+  });
+})();
 
-/**
- * Contact Form Submission to Google Apps Script
- */
-document.addEventListener('DOMContentLoaded', () => {
-    const contactForm = document.getElementById('contactForm');
-    if (contactForm) {
-        contactForm.addEventListener('submit', function (e) {
-            e.preventDefault();
-
-            const submitBtn = this.querySelector('button[type="submit"]');
-            const originalBtnText = submitBtn.textContent;
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-
-            const data = new FormData();
-            data.append('name', this.name.value);
-            data.append('email', this.email.value);
-            data.append('project_type', this.project_type.value || '');
-            data.append('service', this.service.value || '');
-            data.append('budget', this.budget.value || '');
-            data.append('message', this.message.value || '');
-
-            fetch("https://script.google.com/macros/s/AKfycby_THfWs8LRvciU1aiEAmymi6dUiM4-bAi24Dn7GrOQASjhdr0nunCOLOHgDX-iwbtzSw/exec", {
-                method: "POST",
-                body: data,
-                mode: "no-cors"
-            }).then(res => {
-                alert("Message sent successfully!");
-                this.reset();
-            }).catch(err => {
-                console.error("Error:", err);
-                alert("An error occurred while sending the message.");
-            }).finally(() => {
-                submitBtn.textContent = originalBtnText;
-                submitBtn.disabled = false;
-            });
-        });
-    }
-});
+// ─────────────────────────────────────────────────────────────
+// 9. SMOOTH SCROLL — "Watch the Reel" CTA
+// ─────────────────────────────────────────────────────────────
+(function initSmoothScroll() {
+  const watchBtn = $('#heroWatchBtn');
+  if (!watchBtn) return;
+  watchBtn.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.getElementById('work');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
