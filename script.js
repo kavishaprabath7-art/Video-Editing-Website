@@ -430,7 +430,7 @@ function closeSidebar() {
   if (!canvas) return;
   const context = canvas.getContext("2d");
   
-  const frameCount = 78; // 78 frames in the /frames folder
+  const frameCount = 120; // 120 frames in the /frames folder
   const images = [];
   const sequence = { frame: 0 };
 
