@@ -36,7 +36,6 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 html {
-  scroll-behavior: smooth;
   overflow-x: hidden;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
@@ -194,10 +193,6 @@ button {
   color: #0A0A0A;
   border-color: var(--accent);
 }
-.btn-accent:hover {
-  background: #d0ff33;
-  box-shadow: 0 0 24px rgba(192,255,0,0.32);
-}
 .btn-accent:active { background: #aadd00; }
 
 .btn-outline {
@@ -205,11 +200,18 @@ button {
   color: var(--text);
   border-color: rgba(255,255,255,0.15);
 }
-.btn-outline:hover {
-  border-color: rgba(255,255,255,0.3);
-  background: rgba(255,255,255,0.05);
-}
 .btn-outline:active { background: rgba(255,255,255,0.1); }
+
+@media (hover: hover) {
+  .btn-accent:hover {
+    background: #d0ff33;
+    box-shadow: 0 0 24px rgba(192,255,0,0.32);
+  }
+  .btn-outline:hover {
+    border-color: rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.05);
+  }
+}
 
 .btn-sm { padding: 9px 20px; font-size: 0.82rem; min-height: 38px; }
 
@@ -337,28 +339,45 @@ button {
   z-index: 0;
   overflow: hidden;
 }
-.hero__reel-iframe {
+
+/* Studio image — fills viewport, Ken Burns pan on desktop */
+.hero__bg-img {
   position: absolute;
-  top: 50%; left: 50%;
+  inset: 0;
   width: 100%; height: 100%;
-  min-width: 177.78vh;
-  min-height: 56.25vw;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  border: none;
+  object-fit: cover;
+  object-position: center 30%;
+  transform-origin: center center;
+  animation: kenBurnsPan 18s ease-in-out infinite alternate;
+  will-change: transform;
 }
+@keyframes kenBurnsPan {
+  0%   { transform: scale(1.08) translate(0%, 0%); }
+  33%  { transform: scale(1.12) translate(-1.5%, 0.5%); }
+  66%  { transform: scale(1.06) translate(1%, -0.8%); }
+  100% { transform: scale(1.1)  translate(-0.8%, 0.3%); }
+}
+
 .hero__reel-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    to bottom,
-    rgba(10,10,10,0.65) 0%,
-    rgba(10,10,10,0.35) 45%,
-    rgba(10,10,10,0.92) 100%
-  );
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(10,10,10,0.72) 0%,
+      rgba(10,10,10,0.28) 40%,
+      rgba(10,10,10,0.22) 55%,
+      rgba(10,10,10,0.88) 100%
+    ),
+    /* subtle vignette left/right */
+    linear-gradient(
+      to right,
+      rgba(10,10,10,0.55) 0%,
+      transparent 30%,
+      transparent 70%,
+      rgba(10,10,10,0.55) 100%
+    );
 }
-
-.hero__mobile-poster { display: none; }
 
 .hero__content {
   position: relative;
@@ -456,7 +475,7 @@ button {
 
 .video-frame {
   position: relative;
-  padding-top: 56.25%;
+  aspect-ratio: 16 / 9;
   border-radius: var(--r);
   overflow: hidden;
   border: 1px solid var(--border);
@@ -535,6 +554,12 @@ button {
   background: var(--surface-2);
   flex-shrink: 0;
 }
+.work-card--featured {
+  grid-column: span 2;
+}
+.work-card--featured .work-card__poster {
+  aspect-ratio: 16 / 9;
+}
 
 .work-card__embed-wrap {
   position: absolute;
@@ -543,13 +568,10 @@ button {
   overflow: hidden;
   background: #000;
 }
-.work-card__vimeo {
-  position: absolute;
-  top: 50%; left: 50%;
-  width: 150%; height: 150%;
-  transform: translate(-50%, -50%);
-  pointer-events: none;
-  border: none;
+.work-card__poster-img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .work-card__overlay {
@@ -562,7 +584,6 @@ button {
   background: rgba(0,0,0,0.08);
   transition: background var(--tr);
 }
-.work-card:hover .work-card__overlay { background: rgba(0,0,0,0.0); }
 
 .work-card__play-icon {
   display: flex;
@@ -579,11 +600,15 @@ button {
   transition: background var(--tr), transform var(--tr), border-color var(--tr);
   pointer-events: none;
 }
-.work-card:hover .work-card__play-icon {
-  background: var(--accent);
-  color: #0A0A0A;
-  border-color: var(--accent);
-  transform: scale(1.1);
+
+@media (hover: hover) {
+  .js-lightbox:hover .work-card__overlay { background: rgba(0,0,0,0.0); }
+  .js-lightbox:hover .work-card__play-icon {
+    background: var(--accent);
+    color: #0A0A0A;
+    border-color: var(--accent);
+    transform: scale(1.1);
+  }
 }
 
 .work-card__meta {
@@ -669,7 +694,10 @@ button {
   transition: background var(--tr), border-color var(--tr);
   touch-action: manipulation;
 }
-.lightbox__close:hover { background: rgba(40,40,40,0.95); border-color: rgba(255,255,255,0.2); }
+
+@media (hover: hover) {
+  .lightbox__close:hover { background: rgba(40,40,40,0.95); border-color: rgba(255,255,255,0.2); }
+}
 
 .lightbox__inner {
   width: 100%;
@@ -921,6 +949,7 @@ button {
   margin-top: auto;
 }
 .service-card__price strong { color: var(--text); font-size: 1.4rem; margin-right: 2px; }
+.price-was { font-size: 0.8em; opacity: 0.4; text-decoration: line-through; margin-left: 4px; }
 
 /* ── 15. TESTIMONIALS ───────────────────────────────────────── */
 .testimonials {
@@ -988,7 +1017,171 @@ button {
   width: fit-content;
 }
 
-/* ── 16. CONTACT CTA ────────────────────────────────────────── */
+/* ── 16. RECREATIONS ────────────────────────────────────────── */
+.recreations {
+  padding: var(--sp) 0;
+  border-top: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.rec__header {
+  margin-bottom: clamp(36px, 5vw, 60px);
+  max-width: 640px;
+}
+.rec__desc {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  color: rgba(244,244,240,0.6);
+  line-height: 1.75;
+  max-width: 520px;
+  margin-bottom: 1.8rem;
+}
+
+/* Animated accent line — travels left to right on reveal */
+.rec__accent-line {
+  position: relative;
+  height: 2px;
+  width: 100%;
+  max-width: 420px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: visible;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: opacity 0.4s ease, transform 0.7s cubic-bezier(0.23,1,0.32,1);
+}
+.rec__accent-line.is-visible {
+  opacity: 1;
+  transform: scaleX(1);
+}
+.rec__line-track {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, var(--accent), transparent);
+  border-radius: 2px;
+}
+.rec__line-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+  transform: translateY(-50%);
+  box-shadow: 0 0 12px 3px rgba(192,255,0,0.5);
+  animation: dotTravel 2.8s 0.7s ease-in-out infinite;
+}
+@keyframes dotTravel {
+  0%   { left: 0%;   opacity: 1; }
+  80%  { left: 95%;  opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* Grid: 3-col desktop, 2 tablet, 1 mobile */
+.rec__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+
+/* Real video card */
+.rec__card {
+  background: var(--surface);
+  border-radius: var(--r);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  transition: transform var(--tr), border-color var(--tr), box-shadow var(--tr);
+}
+@media (hover: hover) {
+  .rec__card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(255,255,255,0.14);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.55);
+  }
+}
+
+/* 9:16 video wrapper — portrait format */
+.rec__video-wrap {
+  position: relative;
+  padding-top: 177.78%;
+  background: #000;
+  overflow: hidden;
+}
+/* 16:9 video wrapper — landscape format */
+.rec__video-wrap--landscape {
+  padding-top: 56.25%;
+}
+.rec__video-wrap iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%; height: 100%;
+  border: none;
+}
+
+.rec__card-meta {
+  padding: 16px 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.rec__card-tag {
+  font-family: var(--font-h);
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.rec__card-title {
+  font-family: var(--font-h);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+}
+.rec__card-note {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+
+/* "Coming soon" placeholder cards */
+.rec__card--soon {
+  border-style: dashed;
+  border-color: rgba(255,255,255,0.08);
+  background: transparent;
+  min-height: 320px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rec__card--soon:hover {
+  border-color: rgba(192,255,0,0.2);
+  box-shadow: none;
+  transform: none;
+}
+.rec__soon-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 24px;
+  text-align: center;
+}
+.rec__soon-icon {
+  font-size: 2rem;
+  color: rgba(192,255,0,0.3);
+  line-height: 1;
+}
+.rec__soon-inner p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+/* ── 17. CONTACT CTA ────────────────────────────────────────── */
+
 .contact-cta {
   padding: var(--sp) 0;
   border-top: 1px solid var(--border);
@@ -1203,6 +1396,7 @@ button {
   }
   .grain { animation: none !important; opacity: 0.015; }
   .marquee-inner { animation: none !important; }
+  .hero__bg-img { animation: none !important; }
   .reveal, .hero__eyebrow, .hero__title, .hero__sub, .hero__cta {
     opacity: 1 !important;
     transform: none !important;
@@ -1215,14 +1409,16 @@ button {
 
 /* Tablet (≤1024px) */
 @media (max-width: 1024px) {
+  .work-card--featured { grid-column: span 2; }
   .work__grid         { grid-template-columns: repeat(2, 1fr); }
   .services__grid     { grid-template-columns: repeat(2, 1fr); }
   .testimonials__grid { grid-template-columns: repeat(2, 1fr); }
+  .rec__grid          { grid-template-columns: repeat(2, 1fr); }
   .about__grid        { grid-template-columns: 1fr; }
   .about__right       { order: -1; max-width: 380px; }
-  .lightbox__inner    { grid-template-columns: 1fr; max-height: 95vh; max-height: 95dvh; }
-  .lightbox__info     { border-left: none; border-top: 1px solid var(--border); }
-  .lightbox__frame    { aspect-ratio: 9/16; max-height: 60vh; }
+  .lightbox__inner    { display: flex; flex-direction: column; max-height: 95vh; max-height: 95dvh; }
+  .lightbox__info     { flex: 1; border-left: none; border-top: 1px solid var(--border); }
+  .lightbox__frame    { max-height: 60vh; }
 }
 
 /* Mobile (≤768px) */
@@ -1260,20 +1456,23 @@ button {
   .nav__links .nav__link::after { display: none; }
   .nav__links .btn { display: none; }
 
-  /* HERO — hide video on mobile (too heavy), show gradient */
-  .hero__reel-wrap { display: none; }
-  .hero__mobile-poster {
-    display: block;
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse at 30% 30%, #1c2e1c 0%, #0a0a0a 65%);
-    z-index: 0;
+  /* HERO — image works on all devices, just darken overlay slightly on mobile */
+  .hero__reel-overlay {
+    background:
+      linear-gradient(to bottom,
+        rgba(10,10,10,0.80) 0%,
+        rgba(10,10,10,0.35) 40%,
+        rgba(10,10,10,0.95) 100%
+      );
   }
+  /* Pause Ken Burns on mobile for battery/perf */
+  .hero__bg-img { animation-play-state: paused; }
   .hero__scroll-hint { display: none; }
   .hero__cta { gap: 10px; }
 
   /* Work grid — single column, 16:9 for mobile viewing */
   .work__grid { grid-template-columns: 1fr; gap: 14px; }
+  .work-card--featured { grid-column: span 1; }
   .work-card__poster { aspect-ratio: 16 / 9; }
   .work-card__vimeo {
     width: 100%; height: 100%;
@@ -1286,6 +1485,10 @@ button {
   /* Services → single column */
   .services__grid { grid-template-columns: 1fr; gap: 14px; }
 
+  /* Recreations → single column */
+  .rec__grid { grid-template-columns: 1fr; gap: 14px; }
+  .rec__card--soon { min-height: 160px; }
+
   /* Testimonials → single column */
   .testimonials__grid { grid-template-columns: 1fr; }
 
@@ -1296,9 +1499,11 @@ button {
     grid-template-columns: 1fr;
     max-height: 92vh;
     max-height: 92dvh;
+    display: flex;
+    flex-direction: column;
   }
-  .lightbox__frame { aspect-ratio: 16/9; }
-  .lightbox__info { max-height: 45vh; }
+  .lightbox__frame { max-height: 50vh; }
+  .lightbox__info { flex: 1; max-height: none; }
   .lightbox__close {
     top: calc(10px + var(--safe-top));
     right: calc(10px + var(--safe-right));
@@ -1354,4 +1559,16 @@ button {
   .nav, .lightbox, .lightbox__overlay,
   .sidebar, .sidebar-overlay { display: none !important; }
   body { background: #fff; color: #000; }
+}
+
+.hero__bg-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  background-image: url('frames/ezgif-frame-001.jpg');
+  background-size: cover;
+  background-position: center;
 }

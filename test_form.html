@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Form</title>
+</head>
+
+<body>
+    <form id="testForm">
+        <input type="text" name="name" value="Test Name" />
+        <input type="email" name="email" value="test@test.com" />
+        <input type="text" name="project_type" value="Test Category" />
+        <input type="text" name="service" value="Test Service" />
+        <input type="text" name="budget" value="Test Budget" />
+        <textarea name="message">Test Message</textarea>
+        <button type="submit">Send Test</button>
+    </form>
+    <script>
+        document.getElementById('testForm').addEventListener('submit', function (e) {
+            e.preventDefault();
+            const data = {
+                name: this.name.value,
+                email: this.email.value,
+                project_type: this.project_type.value,
+                service: this.service.value,
+                budget: this.budget.value,
+                message: this.message.value
+            };
+            fetch("https://script.google.com/macros/s/AKfycbx-LQJvA6Iur-K-3aXPZUVeVNVBiYrD--dShXK21QekklEqjkW9WmQC0Gs3v6shiuAyug/exec", {
+                method: "POST",
+                body: JSON.stringify(data),
+                mode: "no-cors"
+            }).then(res => {
+                alert("Sent!");
+            }).catch(err => {
+                alert("Error: " + err);
+            });
+        });
+    </script>
+</body>
+
+</html>

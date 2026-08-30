@@ -136,7 +136,10 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
   function openLightbox(card) {
     currentCard = card;
-    const id = card.dataset.vimeoId;
+    const id = card.dataset.videoId;
+
+    // Apply dynamic aspect ratio (default to 9/16 if not specified)
+    lbFrame.style.aspectRatio = card.dataset.aspect || '9/16';
 
     // Populate meta
     lbTag.textContent    = card.dataset.category.charAt(0).toUpperCase() + card.dataset.category.slice(1);
@@ -148,12 +151,7 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
     // Inject full interactive Vimeo player
     lbFrame.innerHTML = '';
-    const iframe = document.createElement('iframe');
-    iframe.src         = `https://player.vimeo.com/video/${id}?badge=0&autopause=0&player_id=lb&app_id=58479`;
-    iframe.allow       = 'autoplay; fullscreen; picture-in-picture; clipboard-write';
-    iframe.setAttribute('allowfullscreen', '');
-    iframe.setAttribute('title', card.dataset.title);
-    lbFrame.appendChild(iframe);
+    lbFrame.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
 
     // Show lightbox
     lb.hidden = false;
@@ -192,8 +190,8 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
     else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   }
 
-  // Open on click / Enter / Space
-  cards.forEach(card => {
+  // Bind click events to open lightbox
+  document.querySelectorAll('.js-lightbox').forEach(card => {
     card.addEventListener('click', () => openLightbox(card));
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openLightbox(card); }
@@ -415,5 +413,88 @@ function closeSidebar() {
     e.preventDefault();
     const target = document.getElementById('work');
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+})();
+
+// ─────────────────────────────────────────────────────────────
+// 10. APPLE-STYLE CANVAS SCROLL ANIMATION
+// ─────────────────────────────────────────────────────────────
+(function initCanvasScroll() {
+  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    return;
+  }
+  
+  gsap.registerPlugin(ScrollTrigger);
+
+  const canvas = document.getElementById("hero-canvas");
+  if (!canvas) return;
+  const context = canvas.getContext("2d");
+  
+  const frameCount = 78; // 78 frames in the /frames folder
+  const images = [];
+  const sequence = { frame: 0 };
+
+  // Preload frames using the exact naming convention
+  for (let i = 1; i <= frameCount; i++) {
+    const img = new Image();
+    let num = i.toString().padStart(3, '0');
+    img.src = `frames/ezgif-frame-${num}.jpg`;
+    images.push(img);
+  }
+
+  // Draw the first frame on load or immediately if cached
+  images[0].onload = render;
+  if (images[0].complete) {
+    render();
+  }
+
+  // Scale-to-fill (Object-Fit: Cover) math equation
+  function render() {
+    const img = images[Math.round(sequence.frame)];
+    if (!img || !img.complete) return;
+    
+    // Set actual canvas resolution to match window size for sharpness
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const canvasRatio = canvas.width / canvas.height;
+    const imgRatio = img.width / img.height;
+    
+    let renderWidth, renderHeight, xOffset, yOffset;
+
+    if (canvasRatio > imgRatio) {
+      renderWidth = canvas.width;
+      renderHeight = canvas.width / imgRatio;
+      xOffset = 0;
+      yOffset = (canvas.height - renderHeight) / 2;
+    } else {
+      renderHeight = canvas.height;
+      renderWidth = canvas.height * imgRatio;
+      xOffset = (canvas.width - renderWidth) / 2;
+      yOffset = 0;
+    }
+
+    context.clearRect(0, 0, canvas.width, canvas.height);
+    context.drawImage(img, xOffset, yOffset, renderWidth, renderHeight);
+  }
+
+  // Handle window.resize to accurately redraw
+  window.addEventListener("resize", () => {
+    requestAnimationFrame(render);
+  });
+
+  // Create the ScrollTrigger animation
+  gsap.to(sequence, {
+    frame: frameCount - 1,
+    snap: "frame",
+    ease: "none",
+    scrollTrigger: {
+      trigger: "#home",
+      start: "top top",
+      end: "+=800",
+      scrub: 0.5,
+      pin: true,
+      onUpdate: render
+    }
   });
 })();

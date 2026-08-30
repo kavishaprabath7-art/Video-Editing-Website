@@ -39,6 +39,8 @@
 
   <!-- Critical CSS first -->
   <link rel="stylesheet" href="styles.css">
+
+
 </head>
 <body>
 
@@ -73,21 +75,11 @@
   HERO
 ───────────────────────────────────────── -->
 <section id="home" class="hero">
-  <!-- Desktop looping showreel behind text -->
+  <!-- Studio image hero background — instant load, works on all devices -->
   <div class="hero__reel-wrap" aria-hidden="true">
-    <iframe
-      id="hero-vimeo-player"
-      class="hero__reel-iframe"
-      src="https://player.vimeo.com/video/1166969006?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479&amp;muted=1&amp;loop=1&amp;background=1&amp;playsinline=1"
-      frameborder="0"
-      allow="autoplay; fullscreen; picture-in-picture"
-      playsinline
-      loading="lazy"
-      title="Hero showreel background"></iframe>
+    <canvas id="hero-canvas" class="hero__bg-canvas"></canvas>
     <div class="hero__reel-overlay"></div>
   </div>
-  <!-- Mobile static poster -->
-  <div class="hero__mobile-poster" aria-hidden="true"></div>
 
   <div class="container hero__content">
     <p class="hero__eyebrow">Cinematic Video Editor · Sri Lanka</p>
@@ -98,7 +90,7 @@
     </h1>
     <p class="hero__sub">High-impact storytelling, professional colour grading, and premium post-production — built for global brands and creators.</p>
     <div class="hero__cta">
-      <a href="#work" class="btn btn-accent btn-magnetic" id="heroWatchBtn">Watch the Reel ↓</a>
+      <a href="#work" class="btn btn-accent btn-magnetic" id="heroWatchBtn">Watch Projects ↓</a>
       <button class="btn btn-outline btn-magnetic" id="heroContactBtn">Work with Me</button>
     </div>
   </div>
@@ -115,16 +107,25 @@
 <section id="showreel" class="showreel">
   <div class="container showreel__inner">
     <div class="section-label reveal">Fiverr Showreel</div>
-    <h2 class="section-title reveal">The Reel</h2>
-    <div class="video-frame reveal">
-      <iframe
-        id="fiverr-vimeo-player"
-        loading="lazy"
-        src="https://player.vimeo.com/video/1166994220?badge=0&amp;autopause=0&amp;player_id=0&amp;app_id=58479"
-        frameborder="0"
-        allow="autoplay; fullscreen; picture-in-picture; clipboard-write"
-        allowfullscreen
-        title="Fiverr Showreel"></iframe>
+    <h2 class="section-title reveal">Introduction</h2>
+    <div class="video-frame js-lightbox reveal"
+         data-category="showreel"
+         data-video-id="1166994220"
+         data-title="Introduction"
+         data-client="Fiverr"
+         data-role="Video Editing"
+         data-tools="Premiere Pro"
+         data-year="2024"
+         data-aspect="16/9"
+         tabindex="0" role="button" style="cursor: pointer; display: block;">
+      <div class="work-card__poster" style="aspect-ratio: 16/9; width: 100%; height: 100%;">
+        <div class="work-card__embed-wrap">
+          <img src="https://vumbnail.com/1166994220.jpg" alt="Fiverr Showreel Poster" class="work-card__poster-img" loading="lazy">
+        </div>
+        <div class="work-card__overlay">
+          <span class="work-card__play-icon">▶</span>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -149,10 +150,37 @@
     <!-- Grid -->
     <div class="work__grid" id="workGrid">
 
+      <!-- Featured Card: Rupavahini Project (Landscape) -->
+      <article class="work-card work-card--featured js-lightbox reveal"
+               data-category="commercial"
+               data-video-id="1222452147"
+               data-title="Rupavahini Project"
+               data-client="National Television Sri Lanka"
+               data-role="Video Editing · Broadcast"
+               data-tools="Premiere Pro · After Effects"
+               data-year="2024"
+               data-aspect="16/9"
+               tabindex="0" role="button"
+               aria-label="View Rupavahini Project">
+        <div class="work-card__poster">
+          <div class="work-card__embed-wrap">
+            <img src="https://vumbnail.com/1222452147.jpg" alt="Rupavahini Project Poster" class="work-card__poster-img" loading="lazy">
+          </div>
+          <div class="work-card__overlay">
+            <span class="work-card__play-icon">▶</span>
+          </div>
+        </div>
+        <div class="work-card__meta">
+          <span class="work-card__tag">Broadcast / Commercial</span>
+          <h3 class="work-card__title">Rupavahini Project — National Television</h3>
+          <img src="rupawahini.png" alt="Rupavahini Logo" class="work-card__client-logo" style="max-height: 90px; max-width: 250px; margin: auto; object-fit: contain; padding-top: 15px;">
+        </div>
+      </article>
+
       <!-- Card 1: Timeline Animation Movie -->
-      <article class="work-card reveal"
+      <article class="work-card js-lightbox reveal"
                data-category="animation"
-               data-vimeo-id="1166922976"
+               data-video-id="1166922976"
                data-title="Timeline Animation Movie"
                data-client="[Client — replace]"
                data-role="Motion Design · Edit"
@@ -162,10 +190,7 @@
                aria-label="View Timeline Animation Movie project">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <iframe src="https://player.vimeo.com/video/1166922976?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;muted=1&amp;loop=1&amp;background=1&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                    loading="lazy" aria-hidden="true" tabindex="-1"
-                    class="work-card__vimeo"></iframe>
+            <img src="https://vumbnail.com/1166922976.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
           </div>
           <div class="work-card__overlay">
             <span class="work-card__play-icon">▶</span>
@@ -178,9 +203,9 @@
       </article>
 
       <!-- Card 2: Dry Ice Promotion Video -->
-      <article class="work-card reveal"
+      <article class="work-card js-lightbox reveal"
                data-category="commercial"
-               data-vimeo-id="1166923241"
+               data-video-id="1166923241"
                data-title="Dry Ice Promotion Video"
                data-client="[Client — replace]"
                data-role="Edit · Grade · Colour"
@@ -190,10 +215,7 @@
                aria-label="View Dry Ice Promotion Video project">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <iframe src="https://player.vimeo.com/video/1166923241?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;muted=1&amp;loop=1&amp;background=1&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                    loading="lazy" aria-hidden="true" tabindex="-1"
-                    class="work-card__vimeo"></iframe>
+            <img src="https://vumbnail.com/1166923241.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
           </div>
           <div class="work-card__overlay">
             <span class="work-card__play-icon">▶</span>
@@ -206,9 +228,9 @@
       </article>
 
       <!-- Card 3: The Dan Koe Style Video -->
-      <article class="work-card reveal"
+      <article class="work-card js-lightbox reveal"
                data-category="social"
-               data-vimeo-id="1166922921"
+               data-video-id="1166922921"
                data-title="The Dan Koe Style Video"
                data-client="[Creator — replace]"
                data-role="Edit · Captions · Sound Design"
@@ -218,10 +240,7 @@
                aria-label="View The Dan Koe Style Video project">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <iframe src="https://player.vimeo.com/video/1166922921?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;muted=1&amp;loop=1&amp;background=1&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                    loading="lazy" aria-hidden="true" tabindex="-1"
-                    class="work-card__vimeo"></iframe>
+            <img src="https://vumbnail.com/1166922921.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
           </div>
           <div class="work-card__overlay">
             <span class="work-card__play-icon">▶</span>
@@ -234,11 +253,11 @@
       </article>
 
       <!-- Card 4: The Airbnb Business Edit -->
-      <article class="work-card reveal"
+      <article class="work-card js-lightbox reveal"
                data-category="showreel"
-               data-vimeo-id="1166922380"
+               data-video-id="1166922380"
                data-title="The Airbnb Business Edit"
-               data-client="[Client — replace]"
+               data-client="Business Client"
                data-role="Edit · Grade · Sound"
                data-tools="DaVinci Resolve · Premiere Pro"
                data-year="2024"
@@ -246,10 +265,7 @@
                aria-label="View The Airbnb Business Edit project">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <iframe src="https://player.vimeo.com/video/1166922380?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;muted=1&amp;loop=1&amp;background=1&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                    loading="lazy" aria-hidden="true" tabindex="-1"
-                    class="work-card__vimeo"></iframe>
+            <img src="https://vumbnail.com/1166922380.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
           </div>
           <div class="work-card__overlay">
             <span class="work-card__play-icon">▶</span>
@@ -261,10 +277,12 @@
         </div>
       </article>
 
+
+
       <!-- Card 5: Mr Beast Style Edit -->
-      <article class="work-card reveal"
+      <article class="work-card js-lightbox reveal"
                data-category="showreel"
-               data-vimeo-id="1166922195"
+               data-video-id="1166922195"
                data-title="Mr Beast Style Edit"
                data-client="[Creator — replace]"
                data-role="Edit · VFX · Motion Graphics"
@@ -274,10 +292,7 @@
                aria-label="View Mr Beast Style Edit project">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <iframe src="https://player.vimeo.com/video/1166922195?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;muted=1&amp;loop=1&amp;background=1&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                    loading="lazy" aria-hidden="true" tabindex="-1"
-                    class="work-card__vimeo"></iframe>
+            <img src="https://vumbnail.com/1166922195.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
           </div>
           <div class="work-card__overlay">
             <span class="work-card__play-icon">▶</span>
@@ -290,9 +305,9 @@
       </article>
 
       <!-- Card 6: Video Editing Is... -->
-      <article class="work-card reveal"
+      <article class="work-card js-lightbox reveal"
                data-category="commercial"
-               data-vimeo-id="1181229165"
+               data-video-id="1181229165"
                data-title="Video Editing Is..."
                data-client="[Creator — replace]"
                data-role="Edit · Colour Grade · Sound Design"
@@ -302,10 +317,7 @@
                aria-label="View Video Editing Is project">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <iframe src="https://player.vimeo.com/video/1181229165?title=0&amp;byline=0&amp;portrait=0&amp;badge=0&amp;autopause=0&amp;muted=1&amp;loop=1&amp;background=1&amp;player_id=0&amp;app_id=58479"
-                    frameborder="0" allow="autoplay; fullscreen; picture-in-picture"
-                    loading="lazy" aria-hidden="true" tabindex="-1"
-                    class="work-card__vimeo"></iframe>
+            <img src="https://vumbnail.com/1181229165.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
           </div>
           <div class="work-card__overlay">
             <span class="work-card__play-icon">▶</span>
@@ -320,6 +332,99 @@
     </div><!-- /work__grid -->
 
     <p class="work__more-soon reveal">More projects coming soon &mdash; reel updates quarterly.</p>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+  RECREATIONS — Landscape
+───────────────────────────────────────── -->
+<section id="recreations-landscape" class="recreations" style="padding-bottom: 0;">
+  <div class="container">
+    <div class="rec__header">
+      <div class="section-label reveal">Skill Showcase</div>
+      <h2 class="section-title reveal">Landscape<br><em class="text-accent">Recreations</em></h2>
+      <p class="rec__desc reveal">Recreating high-impact cinematic edits — precision timing, dynamic cuts, and immersive sound design.</p>
+      <div class="rec__accent-line reveal" aria-hidden="true">
+        <span class="rec__line-track"></span>
+        <span class="rec__line-dot"></span>
+      </div>
+    </div>
+    <div class="rec__grid" style="grid-template-columns: 1fr; max-width: 900px; margin: 0 auto;">
+      <div class="rec__card js-lightbox reveal"
+           data-category="recreation"
+           data-video-id="1222417990"
+           data-title="Time is Money"
+           data-client="Personal Project"
+           data-role="Recreation"
+           data-tools="Premiere Pro"
+           data-year="2024"
+           data-aspect="16/9"
+           tabindex="0" role="button" style="cursor: pointer;">
+        <div class="rec__video-wrap rec__video-wrap--landscape" style="position: relative;">
+          <div class="work-card__embed-wrap">
+            <img src="https://vumbnail.com/1222417990.jpg" alt="Time is Money Poster" class="work-card__poster-img" loading="lazy">
+          </div>
+          <div class="work-card__overlay">
+            <span class="work-card__play-icon">▶</span>
+          </div>
+        </div>
+        <div class="rec__card-meta">
+          <span class="rec__card-tag">Cinematic Edit</span>
+          <h3 class="rec__card-title">Time is Money</h3>
+          <p class="rec__card-note">Recreated a high-impact cinematic edit — precision timing, dynamic cuts, and immersive sound design.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ─────────────────────────────────────────
+  RECREATIONS — Portrait
+───────────────────────────────────────── -->
+<section id="recreations-portrait" class="recreations">
+  <div class="container">
+    <div class="rec__header">
+      <div class="section-label reveal">Skill Showcase</div>
+      <h2 class="section-title reveal">Portrait<br><em class="text-accent">Recreations</em></h2>
+      <p class="rec__desc reveal">Frame-for-frame recreations of viral short-form tutorials. Built to learn, executed with precision.</p>
+      <div class="rec__accent-line reveal" aria-hidden="true">
+        <span class="rec__line-track"></span>
+        <span class="rec__line-dot"></span>
+      </div>
+    </div>
+    <div class="rec__grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 400px)); justify-content: center;">
+      <div class="rec__card js-lightbox reveal"
+           data-category="recreation"
+           data-video-id="1222361103"
+           data-title="The After Effect Guy — Prj 1"
+           data-client="Personal Project"
+           data-role="Recreation"
+           data-tools="After Effects"
+           data-year="2024"
+           data-aspect="9/16"
+           tabindex="0" role="button" style="cursor: pointer;">
+        <div class="rec__video-wrap" style="position: relative;">
+          <div class="work-card__embed-wrap">
+            <img src="https://vumbnail.com/1222361103.jpg" alt="Portrait Recreation Poster" class="work-card__poster-img" loading="lazy">
+          </div>
+          <div class="work-card__overlay">
+            <span class="work-card__play-icon">▶</span>
+          </div>
+        </div>
+        <div class="rec__card-meta">
+          <span class="rec__card-tag">After Effects</span>
+          <h3 class="rec__card-title">The After Effect Guy — Prj 1</h3>
+          <p class="rec__card-note">Frame-for-frame recreation of a viral AE tutorial. Built to learn, executed with precision.</p>
+        </div>
+      </div>
+      
+      <div class="rec__card rec__card--soon reveal">
+        <div class="rec__soon-inner">
+          <span class="rec__soon-icon">＋</span>
+          <p>Next recreation<br>coming soon</p>
+        </div>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -432,7 +537,7 @@
         <span class="service-card__num">01</span>
         <h3 class="service-card__title">Basic Editing</h3>
         <p class="service-card__desc">Clean cuts, basic colour correction, standard transitions — up to 5 min. Fast turnaround. Perfect for social clips and simple deliverables.</p>
-        <div class="service-card__price">from <strong>$10</strong> <span>/video</span></div>
+        <div class="service-card__price">from <strong>$25</strong> <span>/video</span></div>
         <button class="btn btn-outline btn-sm btn-magnetic open-sidebar-btn">Request Quote</button>
       </div>
 
@@ -441,7 +546,7 @@
         <span class="service-card__num">02</span>
         <h3 class="service-card__title">Cinematic Edit</h3>
         <p class="service-card__desc">Advanced narrative editing, cinematic colour grading, custom motion graphics, professional sound design — up to 15 min. 3 revisions.</p>
-        <div class="service-card__price">from <strong>$25</strong> <span>/video <s style="font-size:0.8em;opacity:0.5;">$50</s></span></div>
+        <div class="service-card__price">from <strong>$50</strong> <span>/video <s class="price-was">$100</s></span></div>
         <button class="btn btn-accent btn-sm btn-magnetic open-sidebar-btn">Request Quote</button>
       </div>
 
@@ -605,6 +710,14 @@
     </form>
   </div>
 </aside>
+
+<!-- ─────────────────────────────────────────
+  NEW JAVASCRIPT FOR THE ANIMATION
+───────────────────────────────────────── -->
+<!-- We put GSAP and your animation logic right above your other scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
 
 <script src="https://player.vimeo.com/api/player.js"></script>
 <script src="script.js"></script>
