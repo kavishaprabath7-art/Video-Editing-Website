@@ -33,14 +33,17 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 
   // Scroll → frosted nav
   let ticking = false;
+  function handleScroll() {
+    nav.classList.toggle('scrolled', window.scrollY > 50);
+    ticking = false;
+  }
   window.addEventListener('scroll', () => {
     if (ticking) return;
-    requestAnimationFrame(() => {
-      nav.classList.toggle('scrolled', window.scrollY > 50);
-      ticking = false;
-    });
+    requestAnimationFrame(handleScroll);
     ticking = true;
   }, { passive: true });
+  // Check initial state
+  handleScroll();
 
   // Burger toggle
   function openDrawer() {
@@ -101,9 +104,10 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 // 4. WORK GRID — filter tabs + lightbox
 // ─────────────────────────────────────────────────────────────
 (function initWorkGrid() {
-  const cards      = $$('.work-card');
+  const workCards  = $$('.work-card');
+  const allCards   = $$('.js-lightbox'); // Include recreations and showreels for lightbox nav
   const filterBtns = $$('.filter-btn');
-  if (!cards.length) return;
+  if (!allCards.length) return;
 
   // ── Filter tabs ──────────────────────────────────────────
   filterBtns.forEach(btn => {
@@ -112,7 +116,7 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
       btn.classList.add('active');
       btn.setAttribute('aria-selected', 'true');
       const filter = btn.dataset.filter;
-      cards.forEach(card => {
+      workCards.forEach(card => {
         const hide = filter !== 'all' && card.dataset.category !== filter;
         card.classList.toggle('hidden', hide);
       });
@@ -133,8 +137,10 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   if (!lb) return;
 
   let currentCard = null;
+  let closeTimeout = null;
 
   function openLightbox(card) {
+    if (closeTimeout) clearTimeout(closeTimeout);
     currentCard = card;
     const id = card.dataset.videoId;
 
@@ -142,16 +148,16 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
     lbFrame.style.aspectRatio = card.dataset.aspect || '9/16';
 
     // Populate meta
-    lbTag.textContent    = card.dataset.category.charAt(0).toUpperCase() + card.dataset.category.slice(1);
-    lbTitle.textContent  = card.dataset.title;
-    lbClient.textContent = card.dataset.client;
-    lbRole.textContent   = card.dataset.role;
-    lbTools.textContent  = card.dataset.tools;
-    lbYear.textContent   = card.dataset.year;
+    lbTag.textContent    = card.dataset.category ? card.dataset.category.charAt(0).toUpperCase() + card.dataset.category.slice(1) : '';
+    lbTitle.textContent  = card.dataset.title || '';
+    lbClient.textContent = card.dataset.client || '';
+    lbRole.textContent   = card.dataset.role || '';
+    lbTools.textContent  = card.dataset.tools || '';
+    lbYear.textContent   = card.dataset.year || '';
 
     // Inject full interactive Vimeo player
     lbFrame.innerHTML = '';
-    lbFrame.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}?autoplay=1&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
+    lbFrame.innerHTML = `<iframe src="https://player.vimeo.com/video/${id}?autoplay=1&muted=1&title=0&byline=0&portrait=0&badge=0&autopause=0&player_id=0&app_id=58479" frameborder="0" allow="autoplay; fullscreen; picture-in-picture; clipboard-write; encrypted-media; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>`;
 
     // Show lightbox
     lb.hidden = false;
@@ -171,7 +177,8 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
     lbOverlay.classList.remove('active');
     lb.removeEventListener('keydown', trapFocus);
 
-    setTimeout(() => {
+    if (closeTimeout) clearTimeout(closeTimeout);
+    closeTimeout = setTimeout(() => {
       lb.hidden = true;
       lbFrame.innerHTML = ''; // stops video playback/network requests
       document.body.style.overflow = '';
@@ -207,14 +214,17 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
     if (e.key === 'Escape') { closeLightbox(); return; }
     if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
 
-    const visible = cards.filter(c => !c.classList.contains('hidden'));
+    const visible = allCards.filter(c => !c.classList.contains('hidden'));
     if (visible.length < 2) return;
     const idx = visible.indexOf(currentCard);
     const next = e.key === 'ArrowRight'
       ? visible[(idx + 1) % visible.length]
       : visible[(idx - 1 + visible.length) % visible.length];
 
-    closeLightbox();
+    // Transition smoothly
+    lb.classList.remove('active');
+    lbOverlay.classList.remove('active');
+    if (closeTimeout) clearTimeout(closeTimeout);
     setTimeout(() => openLightbox(next), 470);
   });
 
@@ -224,36 +234,8 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
 })();
 
 // ─────────────────────────────────────────────────────────────
-// 5. VIMEO — pause hero + fiverr on scroll-out
+// (Vimeo SDK integration removed - unused in current architecture)
 // ─────────────────────────────────────────────────────────────
-(function initVimeoPause() {
-  // Only runs if Vimeo SDK loaded successfully
-  if (typeof Vimeo === 'undefined') return;
-
-  const heroEl   = $('#hero-vimeo-player');
-  const fiverrEl = $('#fiverr-vimeo-player');
-
-  const heroPlayer   = heroEl   ? new Vimeo.Player(heroEl)   : null;
-  const fiverrPlayer = fiverrEl ? new Vimeo.Player(fiverrEl) : null;
-
-  // Pause one when the other plays
-  if (heroPlayer && fiverrPlayer) {
-    heroPlayer.on('play',   () => fiverrPlayer.pause().catch(() => {}));
-    fiverrPlayer.on('play', () => heroPlayer.pause().catch(() => {}));
-  }
-
-  // Pause when element scrolls out of view
-  function watchVimeo(el, player) {
-    if (!el || !player) return;
-    const io = new IntersectionObserver(([entry]) => {
-      if (!entry.isIntersecting) player.pause().catch(() => {});
-    }, { threshold: 0.1 });
-    io.observe(el);
-  }
-
-  watchVimeo(heroEl?.closest('.hero__reel-wrap'),  heroPlayer);
-  watchVimeo(fiverrEl?.closest('.video-frame'),    fiverrPlayer);
-})();
 
 // ─────────────────────────────────────────────────────────────
 // 6. SIDEBAR — open / close / swipe
@@ -290,6 +272,7 @@ function closeSidebar() {
   // navContactBtn is already handled in initNav — exclude it here to prevent double-fire.
   const triggers = new Set($$('.open-sidebar-btn'));
   triggers.delete($('#navContactBtn'));           // handled in initNav
+  triggers.delete($('#lbHireBtn'));               // handled in initWorkGrid
   // heroContactBtn has no open-sidebar-btn class — add it explicitly
   const heroContactBtn = $('#heroContactBtn');
   if (heroContactBtn) triggers.add(heroContactBtn);
@@ -339,7 +322,7 @@ function closeSidebar() {
     btn.textContent = 'Sending…';
     btn.disabled = true;
 
-    const data = new FormData();
+    const data = new URLSearchParams();
     data.append('name',         (this.name?.value         || '').trim());
     data.append('email',        (this.email?.value        || '').trim());
     data.append('project_type', (this.project_type?.value || '').trim());
@@ -372,10 +355,13 @@ function closeSidebar() {
       });
   });
 
-  // Reset red border on input
-  $$('[required]', form).forEach(el =>
-    el.addEventListener('input', () => (el.style.borderColor = ''))
-  );
+  // Reset red border on input/change
+  $$('[required]', form).forEach(el => {
+    el.addEventListener('input', () => (el.style.borderColor = ''));
+    if (el.tagName === 'SELECT') {
+      el.addEventListener('change', () => (el.style.borderColor = ''));
+    }
+  });
 })();
 
 // ─────────────────────────────────────────────────────────────
@@ -388,15 +374,19 @@ function closeSidebar() {
   if (!window.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   $$('.btn-magnetic').forEach(btn => {
+    let r, cx, cy;
+    btn.addEventListener('mouseenter', () => {
+      r = btn.getBoundingClientRect();
+      cx = r.left + r.width / 2;
+      cy = r.top + r.height / 2;
+    });
     btn.addEventListener('mousemove', e => {
-      const r  = btn.getBoundingClientRect();
-      const cx = r.left + r.width  / 2;
-      const cy = r.top  + r.height / 2;
-      // Max pull: 8px — subtle, not distracting
+      if (!r) return;
       btn.style.setProperty('--tx', `${(e.clientX - cx) * 0.18}px`);
       btn.style.setProperty('--ty', `${(e.clientY - cy) * 0.18}px`);
     });
     btn.addEventListener('mouseleave', () => {
+      r = null;
       btn.style.setProperty('--tx', '0px');
       btn.style.setProperty('--ty', '0px');
     });
@@ -413,88 +403,5 @@ function closeSidebar() {
     e.preventDefault();
     const target = document.getElementById('work');
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
-})();
-
-// ─────────────────────────────────────────────────────────────
-// 10. APPLE-STYLE CANVAS SCROLL ANIMATION
-// ─────────────────────────────────────────────────────────────
-(function initCanvasScroll() {
-  if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    return;
-  }
-  
-  gsap.registerPlugin(ScrollTrigger);
-
-  const canvas = document.getElementById("hero-canvas");
-  if (!canvas) return;
-  const context = canvas.getContext("2d");
-  
-  const frameCount = 120; // 120 frames in the /frames folder
-  const images = [];
-  const sequence = { frame: 0 };
-
-  // Preload frames using the exact naming convention
-  for (let i = 1; i <= frameCount; i++) {
-    const img = new Image();
-    let num = i.toString().padStart(3, '0');
-    img.src = `frames/ezgif-frame-${num}.jpg`;
-    images.push(img);
-  }
-
-  // Draw the first frame on load or immediately if cached
-  images[0].onload = render;
-  if (images[0].complete) {
-    render();
-  }
-
-  // Scale-to-fill (Object-Fit: Cover) math equation
-  function render() {
-    const img = images[Math.round(sequence.frame)];
-    if (!img || !img.complete) return;
-    
-    // Set actual canvas resolution to match window size for sharpness
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    const canvasRatio = canvas.width / canvas.height;
-    const imgRatio = img.width / img.height;
-    
-    let renderWidth, renderHeight, xOffset, yOffset;
-
-    if (canvasRatio > imgRatio) {
-      renderWidth = canvas.width;
-      renderHeight = canvas.width / imgRatio;
-      xOffset = 0;
-      yOffset = (canvas.height - renderHeight) / 2;
-    } else {
-      renderHeight = canvas.height;
-      renderWidth = canvas.height * imgRatio;
-      xOffset = (canvas.width - renderWidth) / 2;
-      yOffset = 0;
-    }
-
-    context.clearRect(0, 0, canvas.width, canvas.height);
-    context.drawImage(img, xOffset, yOffset, renderWidth, renderHeight);
-  }
-
-  // Handle window.resize to accurately redraw
-  window.addEventListener("resize", () => {
-    requestAnimationFrame(render);
-  });
-
-  // Create the ScrollTrigger animation
-  gsap.to(sequence, {
-    frame: frameCount - 1,
-    snap: "frame",
-    ease: "none",
-    scrollTrigger: {
-      trigger: "#home",
-      start: "top top",
-      end: "+=800",
-      scrub: 0.5,
-      pin: true,
-      onUpdate: render
-    }
   });
 })();
