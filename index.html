@@ -40,7 +40,8 @@
   <!-- Critical CSS first -->
   <link rel="stylesheet" href="styles.css">
 
-
+  <!-- Preload LCP hero image -->
+  <link rel="preload" href="frames/ezgif-frame-001.jpg" as="image">
 </head>
 <body>
 
@@ -100,28 +101,32 @@
 </section>
 
 <!-- ─────────────────────────────────────────
-  FIVERR SHOWREEL (full-width)
+  FIVERR SHOWREEL — special intro
 ───────────────────────────────────────── -->
 <section id="showreel" class="showreel">
-  <div class="container showreel__inner">
-    <div class="section-label reveal">Fiverr Showreel</div>
-    <h2 class="section-title reveal">Introduction</h2>
-    <div class="video-frame js-lightbox reveal"
+  <div class="container">
+    <div class="showreel__head reveal">
+      <span class="section-label">Fiverr Showreel</span>
+      <h2 class="section-title">Introduction</h2>
+      <p class="showreel__sub">A look at my work — the style, the craft, the results.</p>
+    </div>
+    <div class="showreel__player js-lightbox reveal"
          data-category="showreel"
          data-video-id="1166994220"
-         data-title="Introduction"
+         data-title="Introduction — Fiverr Showreel"
          data-client="Fiverr"
          data-role="Video Editing"
          data-tools="Premiere Pro"
          data-year="2024"
          data-aspect="16/9"
-         tabindex="0" role="button" style="cursor: pointer; display: block;">
-      <div class="work-card__poster" style="aspect-ratio: 16/9; width: 100%; height: 100%;">
-        <div class="work-card__embed-wrap">
-          <img src="https://vumbnail.com/1166994220.jpg" alt="Fiverr Showreel Poster" class="work-card__poster-img" loading="lazy">
-        </div>
-        <div class="work-card__overlay">
-          <span class="work-card__play-icon" aria-hidden="true">▶</span>
+         tabindex="0" role="button" aria-label="Watch Fiverr Showreel">
+      <div class="showreel__thumb">
+        <img src="https://vumbnail.com/1166994220.jpg" alt="Fiverr Showreel" class="showreel__img" loading="lazy">
+        <div class="showreel__play" aria-hidden="true">
+          <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="32" r="31" stroke="rgba(255,255,255,0.3)" stroke-width="1.5"/>
+            <path d="M26 20L46 32L26 44V20Z" fill="white"/>
+          </svg>
         </div>
       </div>
     </div>
@@ -138,17 +143,17 @@
 
     <!-- Filter tabs -->
     <div class="work__filters reveal" role="tablist" aria-label="Filter projects">
-      <button class="filter-btn active" data-filter="all"     role="tab" aria-selected="true">All</button>
+      <button class="filter-btn active" data-filter="all"        role="tab" aria-selected="true">All</button>
       <button class="filter-btn"        data-filter="commercial" role="tab" aria-selected="false">Commercial</button>
       <button class="filter-btn"        data-filter="animation"  role="tab" aria-selected="false">Animation</button>
       <button class="filter-btn"        data-filter="social"     role="tab" aria-selected="false">Social</button>
       <button class="filter-btn"        data-filter="showreel"   role="tab" aria-selected="false">Showreel</button>
     </div>
 
-    <!-- Grid -->
+    <!-- Grid — client projects only -->
     <div class="work__grid" id="workGrid">
 
-      <!-- Featured Card: Rupavahini Project (Landscape) -->
+      <!-- Featured: Rupavahini -->
       <article class="work-card work-card--featured js-lightbox reveal"
                data-category="commercial"
                data-video-id="1222452147"
@@ -162,20 +167,18 @@
                aria-label="View Rupavahini Project">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1222452147.jpg" alt="Rupavahini Project Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1222452147.jpg" alt="Rupavahini Project" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="work-card__meta">
           <span class="work-card__tag">Broadcast / Commercial</span>
           <h3 class="work-card__title">Rupavahini Project — National Television</h3>
-          <img src="rupawahini.png" alt="Rupavahini Logo" class="work-card__client-logo" style="max-height: 90px; max-width: 250px; margin: auto; object-fit: contain; padding-top: 15px;">
+          <img src="rupawahini.png" alt="Rupavahini Logo" class="work-card__client-logo">
         </div>
       </article>
 
-      <!-- Card 1: Timeline Animation Movie -->
+      <!-- Timeline Animation -->
       <article class="work-card js-lightbox reveal"
                data-category="animation"
                data-video-id="1166922976"
@@ -185,14 +188,12 @@
                data-tools="After Effects · Premiere Pro"
                data-year="2024"
                tabindex="0" role="button"
-               aria-label="View Timeline Animation Movie project">
+               aria-label="View Timeline Animation Movie">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1166922976.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1166922976.jpg" alt="Timeline Animation Movie" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="work-card__meta">
           <span class="work-card__tag">Animation</span>
@@ -200,7 +201,7 @@
         </div>
       </article>
 
-      <!-- Card 2: Dry Ice Promotion Video -->
+      <!-- Dry Ice -->
       <article class="work-card js-lightbox reveal"
                data-category="commercial"
                data-video-id="1166923241"
@@ -210,14 +211,12 @@
                data-tools="DaVinci Resolve · Premiere Pro"
                data-year="2024"
                tabindex="0" role="button"
-               aria-label="View Dry Ice Promotion Video project">
+               aria-label="View Dry Ice Promotion Video">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1166923241.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1166923241.jpg" alt="Dry Ice Promotion Video" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="work-card__meta">
           <span class="work-card__tag">Commercial</span>
@@ -225,7 +224,7 @@
         </div>
       </article>
 
-      <!-- Card 3: The Dan Koe Style Video -->
+      <!-- Dan Koe -->
       <article class="work-card js-lightbox reveal"
                data-category="social"
                data-video-id="1166922921"
@@ -235,14 +234,12 @@
                data-tools="Premiere Pro · After Effects"
                data-year="2024"
                tabindex="0" role="button"
-               aria-label="View The Dan Koe Style Video project">
+               aria-label="View The Dan Koe Style Video">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1166922921.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1166922921.jpg" alt="Dan Koe Style Video" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="work-card__meta">
           <span class="work-card__tag">Social</span>
@@ -250,7 +247,7 @@
         </div>
       </article>
 
-      <!-- Card 4: The Airbnb Business Edit -->
+      <!-- Airbnb -->
       <article class="work-card js-lightbox reveal"
                data-category="showreel"
                data-video-id="1166922380"
@@ -260,14 +257,12 @@
                data-tools="DaVinci Resolve · Premiere Pro"
                data-year="2024"
                tabindex="0" role="button"
-               aria-label="View The Airbnb Business Edit project">
+               aria-label="View The Airbnb Business Edit">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1166922380.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1166922380.jpg" alt="Airbnb Business Edit" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="work-card__meta">
           <span class="work-card__tag">Showreel</span>
@@ -275,9 +270,7 @@
         </div>
       </article>
 
-
-
-      <!-- Card 5: Mr Beast Style Edit -->
+      <!-- Mr Beast -->
       <article class="work-card js-lightbox reveal"
                data-category="showreel"
                data-video-id="1166922195"
@@ -287,14 +280,12 @@
                data-tools="Premiere Pro · After Effects"
                data-year="2024"
                tabindex="0" role="button"
-               aria-label="View Mr Beast Style Edit project">
+               aria-label="View Mr Beast Style Edit">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1166922195.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1166922195.jpg" alt="Mr Beast Style Edit" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="work-card__meta">
           <span class="work-card__tag">Showreel</span>
@@ -302,7 +293,7 @@
         </div>
       </article>
 
-      <!-- Card 6: Video Editing Is... -->
+      <!-- Video Editing Is... -->
       <article class="work-card js-lightbox reveal"
                data-category="commercial"
                data-video-id="1181229165"
@@ -312,14 +303,12 @@
                data-tools="DaVinci Resolve · Premiere Pro"
                data-year="2025"
                tabindex="0" role="button"
-               aria-label="View Video Editing Is project">
+               aria-label="View Video Editing Is">
         <div class="work-card__poster">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1181229165.jpg" alt="Project Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1181229165.jpg" alt="Video Editing Is..." class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="work-card__meta">
           <span class="work-card__tag">Commercial</span>
@@ -328,101 +317,102 @@
       </article>
 
     </div><!-- /work__grid -->
-
-    <p class="work__more-soon reveal">More projects coming soon &mdash; reel updates quarterly.</p>
   </div>
 </section>
 
 <!-- ─────────────────────────────────────────
-  RECREATIONS — Landscape
+  RECREATIONS
 ───────────────────────────────────────── -->
-<section id="recreations-landscape" class="recreations" style="padding-bottom: 0;">
+<section id="recreations" class="recreations">
   <div class="container">
+
     <div class="rec__header">
       <div class="section-label reveal">Skill Showcase</div>
-      <h2 class="section-title reveal">Landscape<br><em class="text-accent">Recreations</em></h2>
-      <p class="rec__desc reveal">Recreating high-impact cinematic edits — precision timing, dynamic cuts, and immersive sound design.</p>
+      <h2 class="section-title reveal">Personal<br><em class="text-accent">Recreations</em></h2>
+      <p class="rec__desc reveal">Cinematic edits and frame-for-frame recreations — built to push craft.</p>
       <div class="rec__accent-line reveal" aria-hidden="true">
         <span class="rec__line-track"></span>
         <span class="rec__line-dot"></span>
       </div>
     </div>
+
+    <!-- ── Landscape ── -->
+    <div class="rec__sub-label reveal" aria-label="Landscape videos">
+      <span>Landscape</span>
+    </div>
     <div class="rec__grid rec__grid--landscape">
+
       <div class="rec__card js-lightbox reveal"
-           data-category="recreation"
-           data-video-id="1222417990"
-           data-title="Time is Money"
-           data-client="Personal Project"
-           data-role="Recreation"
-           data-tools="Premiere Pro"
-           data-year="2024"
-           data-aspect="16/9"
-           tabindex="0" role="button" style="cursor: pointer;">
-        <div class="rec__video-wrap rec__video-wrap--landscape" style="position: relative;">
+           data-category="recreation" data-video-id="1222417990"
+           data-title="Time is Money" data-client="Personal Project"
+           data-role="Recreation" data-tools="Premiere Pro"
+           data-year="2024" data-aspect="16/9"
+           tabindex="0" role="button" aria-label="Play Time is Money">
+        <div class="rec__video-wrap rec__video-wrap--landscape">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1222417990.jpg" alt="Time is Money Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1222417990.jpg" alt="Time is Money" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="rec__card-meta">
           <span class="rec__card-tag">Cinematic Edit</span>
           <h3 class="rec__card-title">Time is Money</h3>
-          <p class="rec__card-note">Recreated a high-impact cinematic edit — precision timing, dynamic cuts, and immersive sound design.</p>
         </div>
       </div>
-    </div>
-  </div>
-</section>
 
-<!-- ─────────────────────────────────────────
-  RECREATIONS — Portrait
-───────────────────────────────────────── -->
-<section id="recreations-portrait" class="recreations">
-  <div class="container">
-    <div class="rec__header">
-      <div class="section-label reveal">Skill Showcase</div>
-      <h2 class="section-title reveal">Portrait<br><em class="text-accent">Recreations</em></h2>
-      <p class="rec__desc reveal">Frame-for-frame recreations of viral short-form tutorials. Built to learn, executed with precision.</p>
-      <div class="rec__accent-line reveal" aria-hidden="true">
-        <span class="rec__line-track"></span>
-        <span class="rec__line-dot"></span>
+      <div class="rec__card js-lightbox reveal"
+           data-category="recreation" data-video-id="1228534951"
+           data-title="Thaivan Video" data-client="Personal Project"
+           data-role="Recreation" data-tools="Premiere Pro"
+           data-year="2025" data-aspect="16/9"
+           tabindex="0" role="button" aria-label="Play Thaivan Video">
+        <div class="rec__video-wrap rec__video-wrap--landscape">
+          <div class="work-card__embed-wrap">
+            <img src="https://vumbnail.com/1228534951.jpg" alt="Thaivan Video" class="work-card__poster-img" loading="lazy">
+          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
+        </div>
+        <div class="rec__card-meta">
+          <span class="rec__card-tag">Cinematic Edit</span>
+          <h3 class="rec__card-title">Thaivan Video</h3>
+        </div>
       </div>
+
+    </div>
+
+    <!-- ── Portrait ── -->
+    <div class="rec__sub-label reveal" aria-label="Portrait videos">
+      <span>Portrait</span>
     </div>
     <div class="rec__grid rec__grid--portrait">
+
       <div class="rec__card js-lightbox reveal"
-           data-category="recreation"
-           data-video-id="1222361103"
-           data-title="The After Effect Guy — Prj 1"
-           data-client="Personal Project"
-           data-role="Recreation"
-           data-tools="After Effects"
-           data-year="2024"
-           data-aspect="9/16"
-           tabindex="0" role="button" style="cursor: pointer;">
-        <div class="rec__video-wrap" style="position: relative;">
+           data-category="recreation" data-video-id="1222361103"
+           data-title="The After Effect Guy — Prj 1" data-client="Personal Project"
+           data-role="Recreation" data-tools="After Effects"
+           data-year="2024" data-aspect="9/16"
+           tabindex="0" role="button" aria-label="Play After Effect Guy recreation">
+        <div class="rec__video-wrap">
           <div class="work-card__embed-wrap">
-            <img src="https://vumbnail.com/1222361103.jpg" alt="Portrait Recreation Poster" class="work-card__poster-img" loading="lazy">
+            <img src="https://vumbnail.com/1222361103.jpg" alt="After Effect Guy Prj 1" class="work-card__poster-img" loading="lazy">
           </div>
-          <div class="work-card__overlay">
-            <span class="work-card__play-icon" aria-hidden="true">▶</span>
-          </div>
+          <div class="work-card__overlay"><span class="work-card__play-icon" aria-hidden="true">▶</span></div>
         </div>
         <div class="rec__card-meta">
           <span class="rec__card-tag">After Effects</span>
           <h3 class="rec__card-title">The After Effect Guy — Prj 1</h3>
-          <p class="rec__card-note">Frame-for-frame recreation of a viral AE tutorial. Built to learn, executed with precision.</p>
         </div>
       </div>
-      
+
       <div class="rec__card rec__card--soon reveal">
         <div class="rec__soon-inner">
           <span class="rec__soon-icon" aria-hidden="true">＋</span>
           <p>Next recreation<br>coming soon</p>
         </div>
       </div>
+
     </div>
+
   </div>
 </section>
 
@@ -704,7 +694,7 @@
         <label for="message">Project Details</label>
         <textarea id="message" name="message" rows="5" placeholder="Tell me about your project…" required></textarea>
       </div>
-      <button type="submit" class="btn btn-accent" style="width:100%;border:none;">Send Message</button>
+      <button type="submit" class="btn btn-accent sidebar__submit">Send Message</button>
     </form>
   </div>
 </aside>

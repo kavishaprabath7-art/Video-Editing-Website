@@ -110,16 +110,32 @@ const $$ = (sel, ctx = document) => Array.from(ctx.querySelectorAll(sel));
   if (!allCards.length) return;
 
   // ── Filter tabs ──────────────────────────────────────────
+  const workGrid = $('#workGrid');
+  let emptyMsg = $('.work__empty-msg');
+  if (!emptyMsg && workGrid) {
+    emptyMsg = document.createElement('p');
+    emptyMsg.className = 'work__empty-msg hidden';
+    emptyMsg.textContent = 'No projects found in this category yet.';
+    workGrid.parentNode.insertBefore(emptyMsg, workGrid.nextSibling);
+  }
+
   filterBtns.forEach(btn => {
     btn.addEventListener('click', () => {
       filterBtns.forEach(b => { b.classList.remove('active'); b.setAttribute('aria-selected', 'false'); });
       btn.classList.add('active');
       btn.setAttribute('aria-selected', 'true');
       const filter = btn.dataset.filter;
+      
+      let visibleCount = 0;
       workCards.forEach(card => {
         const hide = filter !== 'all' && card.dataset.category !== filter;
         card.classList.toggle('hidden', hide);
+        if (!hide) visibleCount++;
       });
+      
+      if (emptyMsg) {
+        emptyMsg.classList.toggle('hidden', visibleCount > 0);
+      }
     });
   });
 
@@ -394,7 +410,7 @@ function closeSidebar() {
 })();
 
 // ─────────────────────────────────────────────────────────────
-// 9. SMOOTH SCROLL — "Watch the Reel" CTA
+// 9. SMOOTH SCROLL — \"Watch the Reel\" CTA
 // ─────────────────────────────────────────────────────────────
 (function initSmoothScroll() {
   const watchBtn = $('#heroWatchBtn');
@@ -405,3 +421,30 @@ function closeSidebar() {
     if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
   });
 })();
+
+// ─────────────────────────────────────────────────────────────
+// 10. ACTIVE NAV LINK — highlight current section while scrolling
+// ─────────────────────────────────────────────────────────────
+(function initActiveNav() {
+  const sections = $$('section[id]');
+  const navLinks = $$('.nav__link[href^="#"]');
+  if (!sections.length || !navLinks.length) return;
+
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+      navLinks.forEach(link => link.classList.remove('active'));
+      const active = navLinks.find(l => l.getAttribute('href') === '#' + entry.target.id);
+      if (active) active.classList.add('active');
+    });
+  }, { rootMargin: '-40% 0px -55% 0px' });
+
+  sections.forEach(s => io.observe(s));
+})();
+
+// ─────────────────────────────────────────────────────────────
+// 11. TOUCH OPTIMISATION — instant tap, no 300ms delay
+// ─────────────────────────────────────────────────────────────
+document.querySelectorAll('.js-lightbox, .filter-btn, .btn').forEach(el => {
+  el.style.touchAction = 'manipulation';
+});
